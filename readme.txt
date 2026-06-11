@@ -5,7 +5,7 @@ Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 3.3.52
+Stable tag: 3.3.53
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,7 +54,8 @@ After activation, open the Portus Cart settings page to adjust:
 * Cart title.
 * Floating cart button visibility and spacing.
 * Primary and accent colors.
-* Checkout and cart button labels.
+* Checkout, cart and empty cart button labels.
+* Optional custom URL for the empty cart button.
 * Coupon field follows the standard WooCommerce coupon setting.
 * Automatic opening after AJAX add to cart.
 * Panel width, z-index and overlay opacity.
@@ -115,10 +116,10 @@ Cart content, quantities and totals are handled by WooCommerce. Store owners sho
 
 == Changelog ==
 
-= 3.3.52 =
-* WordPress.org-ready package with responsive side cart, AJAX cart actions, WooCommerce coupon support, floating cart button, admin settings and compatibility controls.
+= 3.3.53 =
+* Adds an optional custom URL setting for the empty cart button while keeping the WooCommerce shop page as the default fallback.
 
 == Upgrade Notice ==
 
-= 3.3.52 =
-Initial public package for WordPress.org submission.
+= 3.3.53 =
+Adds an admin setting for the empty cart button URL.

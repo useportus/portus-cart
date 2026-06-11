@@ -142,6 +142,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				'show_cart_button'             => 'yes',
 				'cart_button_text'             => __( 'Ver carrinho', 'portus-cart-for-woocommerce' ),
 				'empty_button_text'            => __( 'Ver produtos', 'portus-cart-for-woocommerce' ),
+				'empty_button_url'             => '',
 				'show_low_stock_alerts'        => 'yes',
 				'low_stock_threshold'          => 2,
 				'delete_settings_on_uninstall' => 'no',
@@ -457,7 +458,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 			return array(
 				'general'    => array( 'cart_title', 'enabled_floating_button', 'hide_floating_on_product', 'floating_bottom_offset' ),
 				'appearance' => array( 'primary_color', 'accent_color' ),
-				'buttons'    => array( 'checkout_button_text', 'show_cart_button', 'cart_button_text', 'empty_button_text' ),
+				'buttons'    => array( 'checkout_button_text', 'show_cart_button', 'cart_button_text', 'empty_button_text', 'empty_button_url' ),
 				'stock'      => array( 'show_low_stock_alerts', 'low_stock_threshold' ),
 				'advanced'   => array( 'delete_settings_on_uninstall' ),
 				'status'     => array(),
@@ -621,6 +622,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				self::render_checkbox_input( 'show_cart_button', __( 'Mostrar botão Ver carrinho', 'portus-cart-for-woocommerce' ), $settings['show_cart_button'] );
 				self::render_text_input( 'cart_button_text', __( 'Chamada para ver o carrinho completo', 'portus-cart-for-woocommerce' ), $settings['cart_button_text'] );
 				self::render_text_input( 'empty_button_text', __( 'Chamada quando o carrinho está vazio', 'portus-cart-for-woocommerce' ), $settings['empty_button_text'] );
+				self::render_text_input( 'empty_button_url', __( 'URL do botão quando o carrinho está vazio', 'portus-cart-for-woocommerce' ), $settings['empty_button_url'] );
 				?>
 			</section>
 			<?php
@@ -1389,6 +1391,16 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 
 
 
+
+			if ( 'empty_button_url' === $key ) {
+				if ( ! is_scalar( $value ) ) {
+					return '';
+				}
+
+				$url = esc_url_raw( trim( $value ) );
+
+				return $url ? $url : '';
+			}
 
 
 

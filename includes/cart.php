@@ -410,14 +410,21 @@ if ( ! class_exists( 'Meu_Side_Cart_Cart' ) ) {
 		 * Renders empty cart state.
 		 */
 		private static function render_empty_state() {
-			$shop_url    = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/' );
+			$button_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/' );
 			$button_text = class_exists( 'Meu_Side_Cart_Settings' ) ? Meu_Side_Cart_Settings::get( 'empty_button_text' ) : __( 'Ver produtos', 'portus-cart-for-woocommerce' );
+			if ( class_exists( 'Meu_Side_Cart_Settings' ) ) {
+				$custom_button_url = trim( (string) Meu_Side_Cart_Settings::get( 'empty_button_url' ) );
+
+				if ( '' !== $custom_button_url ) {
+					$button_url = $custom_button_url;
+				}
+			}
 			?>
 			<div class="msc-empty">
 				<div class="msc-empty-mark" aria-hidden="true"><?php self::render_bag_icon(); ?></div>
 				<h3><?php esc_html_e( 'Seu carrinho está vazio', 'portus-cart-for-woocommerce' ); ?></h3>
 				<p><?php esc_html_e( 'Adicione um produto para continuar a compra.', 'portus-cart-for-woocommerce' ); ?></p>
-				<a class="msc-button msc-button-primary" href="<?php echo esc_url( $shop_url ); ?>">
+				<a class="msc-button msc-button-primary" href="<?php echo esc_url( $button_url ); ?>">
 					<?php echo esc_html( $button_text ); ?>
 				</a>
 			</div>
