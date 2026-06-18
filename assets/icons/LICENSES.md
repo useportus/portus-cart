@@ -4,6 +4,10 @@ These icons are bundled locally with Portus Cart. Before publishing a package to
 
 | File | Source | Collection | License | Author / Uploader |
 | --- | --- | --- | --- | --- |
+| `floating-bag-fill.svg` | https://icons.getbootstrap.com/icons/bag-fill/ | Bootstrap Icons | MIT License (`BOOTSTRAP-ICONS-LICENSE.txt`) | The Bootstrap Authors |
+| `floating-cart.svg` | https://icons.getbootstrap.com/icons/cart/ | Bootstrap Icons | MIT License (`BOOTSTRAP-ICONS-LICENSE.txt`) | The Bootstrap Authors |
+| `floating-basket.svg` | https://icons.getbootstrap.com/icons/basket/ | Bootstrap Icons | MIT License (`BOOTSTRAP-ICONS-LICENSE.txt`) | The Bootstrap Authors |
+| `floating-bag.svg` | https://icons.getbootstrap.com/icons/bag/ | Bootstrap Icons | MIT License (`BOOTSTRAP-ICONS-LICENSE.txt`) | The Bootstrap Authors |
 | `bag-icon.svg` | https://www.svgrepo.com/svg/343997/bag-fill | Bootstrap Filled UI Icons | MIT License | Bootstrap |
 | `heart-icon.svg` | https://www.svgrepo.com/svg/432497/heart-alt | Sargam Filled Interface Icons | MIT License | Sargam Icons |
 | `close-button.svg` | https://www.svgrepo.com/svg/432442/close-square | Sargam Filled Interface Icons | MIT License | Sargam Icons |

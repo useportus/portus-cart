@@ -19,7 +19,7 @@
 	width: 48px;
 	height: 48px;
 	border-radius: 12px;
-	box-shadow: 0 4px 14px rgba(4, 15, 124, 0.16);
+	box-shadow: 0 4px 14px rgba(0, 5, 58, 0.16);
 }
 
 .portus-cart-for-woocommerce-admin__brand h1 {
@@ -47,11 +47,11 @@
 }
 
 .portus-cart-for-woocommerce-admin__overview div {
-	border: 1px solid rgba(4, 15, 124, 0.12);
+	border: 1px solid rgba(0, 5, 58, 0.12);
 	border-radius: 12px;
 	padding: 14px;
 	background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
-	box-shadow: 0 10px 26px rgba(4, 15, 124, 0.06);
+	box-shadow: 0 10px 26px rgba(0, 5, 58, 0.06);
 }
 
 .portus-cart-for-woocommerce-admin__overview span,
@@ -69,7 +69,7 @@
 
 .portus-cart-for-woocommerce-admin__overview strong {
 	display: block;
-	color: #040f7c;
+	color: #00053A;
 	font-size: 16px;
 	line-height: 1.25;
 }
@@ -85,11 +85,11 @@
 	width: 100%;
 	max-width: 1180px;
 	margin-top: 18px;
-	border: 1px solid rgba(4, 15, 124, 0.12);
+	border: 1px solid rgba(0, 5, 58, 0.12);
 	border-radius: 14px;
 	padding: 8px;
 	background: #ffffff;
-	box-shadow: 0 10px 28px rgba(4, 15, 124, 0.06);
+	box-shadow: 0 10px 28px rgba(0, 5, 58, 0.06);
 	overflow-x: auto;
 	overflow-y: hidden;
 	scrollbar-width: thin;
@@ -115,18 +115,18 @@
 
 .portus-cart-for-woocommerce-admin__tab:hover,
 .portus-cart-for-woocommerce-admin__tab:focus {
-	border-color: rgba(207, 181, 59, 0.42);
-	background: rgba(207, 181, 59, 0.12);
-	color: #040f7c;
+	border-color: rgba(192, 168, 33, 0.42);
+	background: rgba(192, 168, 33, 0.12);
+	color: #00053A;
 	box-shadow: none;
 	outline: none;
 }
 
 .portus-cart-for-woocommerce-admin__tab.is-active {
-	border-color: #040f7c;
-	background: #040f7c;
+	border-color: #00053A;
+	background: #00053A;
 	color: #ffffff;
-	box-shadow: 0 10px 18px rgba(4, 15, 124, 0.18);
+	box-shadow: 0 10px 18px rgba(0, 5, 58, 0.18);
 }
 
 .portus-cart-for-woocommerce-admin__grid {
@@ -140,17 +140,17 @@
 
 .portus-cart-for-woocommerce-admin__card,
 .portus-cart-for-woocommerce-admin__tools {
-	border: 1px solid rgba(4, 15, 124, 0.12);
+	border: 1px solid rgba(0, 5, 58, 0.12);
 	border-radius: 14px;
 	padding: 22px;
 	background: #ffffff;
-	box-shadow: 0 12px 30px rgba(4, 15, 124, 0.07);
+	box-shadow: 0 12px 30px rgba(0, 5, 58, 0.07);
 }
 
 .portus-cart-for-woocommerce-admin__card h2,
 .portus-cart-for-woocommerce-admin__tools h2 {
 	margin: 0 0 16px;
-	color: #040f7c;
+	color: #00053A;
 	font-size: 17px;
 	line-height: 1.25;
 }
@@ -181,7 +181,7 @@
 	border-radius: 999px;
 	padding: 3px 8px;
 	background: #eef4ff;
-	color: #040f7c;
+	color: #00053A;
 	font-size: 12px;
 	font-style: normal;
 	font-weight: 900;
@@ -189,7 +189,7 @@
 
 .portus-cart-for-woocommerce-admin__field-range input[type="range"] {
 	width: 100%;
-	accent-color: #040f7c;
+	accent-color: #00053A;
 }
 
 .portus-cart-for-woocommerce-admin__field-color input {
@@ -202,6 +202,80 @@
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 12px;
+}
+
+.portus-cart-for-woocommerce-admin__field-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.portus-cart-for-woocommerce-admin__icon-picker {
+	padding: 0;
+	margin: 18px 0;
+	border: 0;
+}
+
+.portus-cart-for-woocommerce-admin__icon-picker legend {
+	margin-bottom: 8px;
+	font-weight: 700;
+}
+
+.portus-cart-for-woocommerce-admin__icon-picker > div {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(110px, 1fr));
+	gap: 10px;
+}
+
+.portus-cart-for-woocommerce-admin__icon-picker label {
+	position: relative;
+	display: grid;
+	gap: 8px;
+	place-items: center;
+	min-height: 104px;
+	border: 1px solid rgba(0, 5, 58, 0.16);
+	border-radius: 10px;
+	padding: 12px 8px;
+	background: #ffffff;
+	cursor: pointer;
+	text-align: center;
+}
+
+.portus-cart-for-woocommerce-admin__icon-picker label:has(input:checked) {
+	border-color: #00053A;
+	background: #f2f5ff;
+	box-shadow: 0 0 0 1px #00053A;
+}
+
+.portus-cart-for-woocommerce-admin__icon-picker input {
+	position: absolute;
+	top: 8px;
+	left: 8px;
+}
+
+.portus-cart-for-woocommerce-admin__icon-choice {
+	display: grid;
+	width: 42px;
+	height: 42px;
+	place-items: center;
+	border-radius: 50%;
+	background: #eef1f8;
+	color: #00053A;
+}
+
+.portus-cart-for-woocommerce-admin__icon-choice i {
+	width: 24px;
+	height: 24px;
+}
+
+.portus-cart-for-woocommerce-admin__icon-picker strong {
+	font-size: 12px;
+	line-height: 1.3;
+}
+
+.portus-cart-for-woocommerce-admin__floating-colors,
+.portus-cart-for-woocommerce-admin__visibility-options {
+	margin-top: 8px;
 }
 
 .portus-cart-for-woocommerce-admin__toggle {
@@ -252,7 +326,7 @@
 .portus-cart-for-woocommerce-admin__compat-summary strong,
 .portus-cart-for-woocommerce-admin__license-steps strong {
 	display: block;
-	color: #040f7c;
+	color: #00053A;
 }
 
 .portus-cart-for-woocommerce-admin__license-card {
@@ -283,7 +357,7 @@
 
 .portus-cart-for-woocommerce-admin__license-status strong {
 	display: block;
-	color: #040f7c;
+	color: #00053A;
 	word-break: break-word;
 }
 
@@ -293,7 +367,7 @@
 }
 
 .portus-cart-for-woocommerce-admin__license-note {
-	border-left: 4px solid #CFB53B;
+	border-left: 4px solid #C0A821;
 	margin: 12px 0 0;
 	padding: 10px 12px;
 	background: #fffdf2;
@@ -358,7 +432,7 @@
 }
 
 .portus-cart-for-woocommerce-admin__status-card-main {
-	border-color: rgba(4, 15, 124, 0.18);
+	border-color: rgba(0, 5, 58, 0.18);
 	background: linear-gradient(180deg, #ffffff 0%, #f7f8ff 100%);
 }
 
@@ -369,16 +443,16 @@
 }
 
 .portus-cart-for-woocommerce-admin__status-summary div {
-	border: 1px solid rgba(4, 15, 124, 0.12);
+	border: 1px solid rgba(0, 5, 58, 0.12);
 	border-radius: 12px;
 	padding: 15px;
 	background: #ffffff;
-	box-shadow: 0 8px 18px rgba(4, 15, 124, 0.05);
+	box-shadow: 0 8px 18px rgba(0, 5, 58, 0.05);
 }
 
 .portus-cart-for-woocommerce-admin__status-summary strong {
 	display: block;
-	color: #040f7c;
+	color: #00053A;
 	font-size: 20px;
 	line-height: 1.1;
 }
@@ -401,7 +475,7 @@
 	grid-template-columns: minmax(0, 1fr) minmax(120px, auto) 92px;
 	align-items: center;
 	gap: 12px;
-	border: 1px solid rgba(4, 15, 124, 0.1);
+	border: 1px solid rgba(0, 5, 58, 0.1);
 	border-radius: 12px;
 	padding: 14px;
 	background: #ffffff;
@@ -421,7 +495,7 @@
 
 .portus-cart-for-woocommerce-admin__status-value {
 	justify-self: end;
-	color: #040f7c;
+	color: #00053A;
 	font-weight: 800;
 	text-align: right;
 }
@@ -450,12 +524,12 @@
 
 .portus-cart-for-woocommerce-admin__status-badge-info {
 	background: #eef4ff;
-	color: #040f7c;
+	color: #00053A;
 }
 
 .portus-cart-for-woocommerce-admin__status-table {
 	display: grid;
-	border: 1px solid rgba(4, 15, 124, 0.1);
+	border: 1px solid rgba(0, 5, 58, 0.1);
 	border-radius: 12px;
 	overflow: hidden;
 	background: #ffffff;
@@ -488,7 +562,7 @@
 }
 
 .portus-cart-for-woocommerce-admin__help-hero {
-	border-color: rgba(4, 15, 124, 0.18);
+	border-color: rgba(0, 5, 58, 0.18);
 	background: linear-gradient(180deg, #ffffff 0%, #f7f8ff 100%);
 }
 
@@ -509,19 +583,19 @@
 	display: inline-flex;
 	min-height: 34px;
 	align-items: center;
-	border: 1px solid rgba(4, 15, 124, 0.18);
+	border: 1px solid rgba(0, 5, 58, 0.18);
 	border-radius: 999px;
 	padding: 0 12px;
 	background: #ffffff;
-	color: #040f7c;
+	color: #00053A;
 	font-weight: 800;
 	text-decoration: none;
 }
 
 .portus-cart-for-woocommerce-admin__help-links a:hover,
 .portus-cart-for-woocommerce-admin__help-links a:focus {
-	border-color: #CFB53B;
-	color: #040f7c;
+	border-color: #C0A821;
+	color: #00053A;
 }
 
 .portus-cart-for-woocommerce-admin__help-list {
@@ -554,7 +628,7 @@
 
 .portus-cart-for-woocommerce-admin__help-table strong {
 	margin-bottom: 5px;
-	color: #040f7c;
+	color: #00053A;
 }
 
 .portus-cart-for-woocommerce-admin__help-table span {
@@ -598,7 +672,7 @@
 .portus-cart-for-woocommerce-admin__faq-list summary {
 	cursor: pointer;
 	padding: 12px;
-	color: #040f7c;
+	color: #00053A;
 	font-weight: 900;
 }
 
@@ -619,8 +693,8 @@
 .portus-cart-for-woocommerce-admin__support-hero {
 	position: relative;
 	overflow: hidden;
-	border-color: rgba(4, 15, 124, 0.16);
-	background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 62%, rgba(207, 181, 59, 0.12) 100%);
+	border-color: rgba(0, 5, 58, 0.16);
+	background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 62%, rgba(192, 168, 33, 0.12) 100%);
 }
 
 .portus-cart-for-woocommerce-admin__support-hero::before {
@@ -628,7 +702,7 @@
 	position: absolute;
 	inset: 0 auto 0 0;
 	width: 5px;
-	background: #040f7c;
+	background: #00053A;
 }
 
 .portus-cart-for-woocommerce-admin__support-hero h2,
@@ -660,7 +734,7 @@
 	border: 0;
 	border-radius: 999px;
 	padding: 0 15px;
-	background: #040f7c;
+	background: #00053A;
 	color: #ffffff;
 	font-weight: 800;
 }
@@ -669,26 +743,26 @@
 	display: inline-flex;
 	min-height: 38px;
 	align-items: center;
-	border: 1px solid rgba(4, 15, 124, 0.18);
+	border: 1px solid rgba(0, 5, 58, 0.18);
 	border-radius: 999px;
 	padding: 0 15px;
 	background: #ffffff;
-	color: #040f7c;
+	color: #00053A;
 	font-weight: 800;
 	text-decoration: none;
 }
 
 .portus-cart-for-woocommerce-admin__support-actions .button:hover,
 .portus-cart-for-woocommerce-admin__support-actions .button:focus {
-	background: #CFB53B;
-	color: #040f7c;
+	background: #C0A821;
+	color: #00053A;
 	box-shadow: none;
 }
 
 .portus-cart-for-woocommerce-admin__support-actions a:hover,
 .portus-cart-for-woocommerce-admin__support-actions a:focus {
-	border-color: #CFB53B;
-	color: #040f7c;
+	border-color: #C0A821;
+	color: #00053A;
 }
 
 .portus-cart-for-woocommerce-admin__support-meta {
@@ -698,7 +772,7 @@
 }
 
 .portus-cart-for-woocommerce-admin__support-meta div {
-	border: 1px solid rgba(4, 15, 124, 0.1);
+	border: 1px solid rgba(0, 5, 58, 0.1);
 	border-radius: 12px;
 	padding: 15px;
 	background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
@@ -718,7 +792,7 @@
 }
 
 .portus-cart-for-woocommerce-admin__support-meta strong {
-	color: #040f7c;
+	color: #00053A;
 	word-break: break-word;
 }
 
@@ -743,7 +817,7 @@
 	grid-template-columns: 96px minmax(0, 1fr);
 	gap: 18px;
 	align-items: center;
-	border-color: rgba(4, 15, 124, 0.18);
+	border-color: rgba(0, 5, 58, 0.18);
 	background: linear-gradient(180deg, #ffffff 0%, #f7f8ff 100%);
 }
 
@@ -752,7 +826,7 @@
 	width: 96px;
 	height: 96px;
 	border-radius: 22px;
-	box-shadow: 0 14px 30px rgba(4, 15, 124, 0.18);
+	box-shadow: 0 14px 30px rgba(0, 5, 58, 0.18);
 }
 
 .portus-cart-for-woocommerce-admin__about-kicker {
@@ -760,8 +834,8 @@
 	margin-bottom: 8px;
 	border-radius: 999px;
 	padding: 5px 10px;
-	background: rgba(207, 181, 59, 0.16);
-	color: #040f7c;
+	background: rgba(192, 168, 33, 0.16);
+	color: #00053A;
 	font-size: 11px;
 	font-weight: 900;
 	text-transform: uppercase;
@@ -790,19 +864,19 @@
 	display: inline-flex;
 	min-height: 34px;
 	align-items: center;
-	border: 1px solid rgba(4, 15, 124, 0.18);
+	border: 1px solid rgba(0, 5, 58, 0.18);
 	border-radius: 999px;
 	padding: 0 12px;
 	background: #ffffff;
-	color: #040f7c;
+	color: #00053A;
 	font-weight: 800;
 	text-decoration: none;
 }
 
 .portus-cart-for-woocommerce-admin__about-actions a:hover,
 .portus-cart-for-woocommerce-admin__about-actions a:focus {
-	border-color: #CFB53B;
-	color: #040f7c;
+	border-color: #C0A821;
+	color: #00053A;
 }
 
 .portus-cart-for-woocommerce-admin__about-meta,
@@ -837,7 +911,7 @@
 .portus-cart-for-woocommerce-admin__about-meta strong,
 .portus-cart-for-woocommerce-admin__about-grid strong {
 	display: block;
-	color: #040f7c;
+	color: #00053A;
 }
 
 .portus-cart-for-woocommerce-admin__about-grid strong {
@@ -855,7 +929,7 @@
 
 .portus-cart-for-woocommerce-admin__preview-copy h2 {
 	margin: 0 0 8px;
-	color: #040f7c;
+	color: #00053A;
 	font-size: 18px;
 }
 
@@ -863,6 +937,32 @@
 	margin: 0;
 	color: #50575e;
 	line-height: 1.5;
+}
+
+.portus-cart-for-woocommerce-admin__preview-devices {
+	display: inline-flex;
+	gap: 4px;
+	margin-top: 14px;
+	border: 1px solid rgba(0, 5, 58, 0.16);
+	border-radius: 8px;
+	padding: 3px;
+	background: #ffffff;
+}
+
+.portus-cart-for-woocommerce-admin__preview-devices button {
+	min-height: 32px;
+	border: 0;
+	border-radius: 6px;
+	padding: 0 11px;
+	background: transparent;
+	color: #00053A;
+	cursor: pointer;
+	font-weight: 700;
+}
+
+.portus-cart-for-woocommerce-admin__preview-devices button[aria-pressed="true"] {
+	background: #00053A;
+	color: #ffffff;
 }
 
 .portus-cart-for-woocommerce-preview {
@@ -876,6 +976,10 @@
 	padding: 14px;
 	color: #111827;
 	font-family: inherit;
+}
+
+.portus-cart-for-woocommerce-preview--device-mobile {
+	max-width: 390px;
 }
 
 .portus-cart-for-woocommerce-preview [hidden] {
@@ -930,6 +1034,23 @@
 	mask: url("../icons/bag-icon.svg") center / contain no-repeat;
 }
 
+.portus-cart-for-woocommerce-admin__floating-icon,
+.portus-cart-for-woocommerce-preview__floating-icon {
+	display: block;
+	background: currentColor;
+	-webkit-mask: var(--aurea-floating-icon-mask) center / contain no-repeat;
+	mask: var(--aurea-floating-icon-mask) center / contain no-repeat;
+}
+
+.portus-cart-for-woocommerce-admin__floating-icon--bag-fill,
+.portus-cart-for-woocommerce-preview__floating-icon--bag-fill { --aurea-floating-icon-mask: url("../icons/floating-bag-fill.svg"); }
+.portus-cart-for-woocommerce-admin__floating-icon--cart,
+.portus-cart-for-woocommerce-preview__floating-icon--cart { --aurea-floating-icon-mask: url("../icons/floating-cart.svg"); }
+.portus-cart-for-woocommerce-admin__floating-icon--basket,
+.portus-cart-for-woocommerce-preview__floating-icon--basket { --aurea-floating-icon-mask: url("../icons/floating-basket.svg"); }
+.portus-cart-for-woocommerce-admin__floating-icon--bag,
+.portus-cart-for-woocommerce-preview__floating-icon--bag { --aurea-floating-icon-mask: url("../icons/floating-bag.svg"); }
+
 .portus-cart-for-woocommerce-preview__panel {
 	position: relative;
 	z-index: 2;
@@ -938,7 +1059,7 @@
 	border: 1px solid var(--aurea-preview-border);
 	border-radius: 12px;
 	background: #ffffff;
-	box-shadow: 0 18px 45px rgba(4, 15, 124, 0.12);
+	box-shadow: 0 18px 45px rgba(0, 5, 58, 0.12);
 }
 
 .portus-cart-for-woocommerce-preview__overlay {
@@ -956,14 +1077,21 @@
 	bottom: 24px;
 	z-index: 3;
 	display: grid;
-	width: 50px;
-	height: 50px;
+	width: var(--aurea-preview-floating-button-size, 50px);
+	height: var(--aurea-preview-floating-button-size, 50px);
 	place-items: center;
 	border: 0;
-	border-radius: 50%;
-	background: rgba(255, 255, 255, 0.92);
-	color: var(--aurea-preview-primary);
+	background: rgba(var(--aurea-preview-floating-background-rgb, 255, 255, 255), 0.92);
+	color: var(--aurea-preview-floating-icon-color, var(--aurea-preview-primary));
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.17);
+}
+
+.portus-cart-for-woocommerce-preview__floating--circle {
+	border-radius: 50%;
+}
+
+.portus-cart-for-woocommerce-preview__floating--rounded {
+	border-radius: 12px;
 }
 
 .portus-cart-for-woocommerce-preview--floating-left .portus-cart-for-woocommerce-preview__floating {
@@ -971,17 +1099,15 @@
 	left: 24px;
 }
 
-.portus-cart-for-woocommerce-preview__floating i,
-.portus-cart-for-woocommerce-preview__floating .portus-cart-for-woocommerce-preview__bag-icon {
+.portus-cart-for-woocommerce-preview__floating-icon {
 	display: block;
-	width: 28px;
-	height: 28px;
-	color: var(--aurea-preview-primary);
-	font-size: 28px;
+	width: var(--aurea-preview-floating-icon-size, 28px);
+	height: var(--aurea-preview-floating-icon-size, 28px);
+	color: var(--aurea-preview-floating-icon-color, var(--aurea-preview-primary));
 	line-height: 1;
 }
 
-.portus-cart-for-woocommerce-preview__floating span {
+.portus-cart-for-woocommerce-preview__floating-count {
 	position: absolute;
 	top: 58%;
 	left: 50%;
@@ -991,11 +1117,35 @@
 	height: 12px;
 	align-items: center;
 	justify-content: center;
-	color: #ffffff;
+	background: transparent;
+	color: var(--aurea-preview-floating-counter-color, #ffffff);
 	font-size: 10px;
 	font-weight: 900;
 	line-height: 1;
 	pointer-events: none;
+}
+
+.portus-cart-for-woocommerce-preview__floating--counter-filled .portus-cart-for-woocommerce-preview__floating-count {
+	min-width: 18px;
+	height: 18px;
+	border-radius: 999px;
+	padding: 0 4px;
+	background: var(--aurea-preview-floating-counter-background, #C0A821);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.portus-cart-for-woocommerce-preview__floating--counter-top-right .portus-cart-for-woocommerce-preview__floating-count {
+	top: -5px;
+	right: -5px;
+	left: auto;
+	transform: none;
+}
+
+.portus-cart-for-woocommerce-preview__floating--counter-top-left .portus-cart-for-woocommerce-preview__floating-count {
+	top: -5px;
+	right: auto;
+	left: -5px;
+	transform: none;
 }
 
 .portus-cart-for-woocommerce-preview__header {
@@ -1094,7 +1244,7 @@
 	height: 58px;
 	place-items: center;
 	border-radius: 8px;
-	background: rgba(4, 15, 124, 0.08);
+	background: rgba(0, 5, 58, 0.08);
 	color: var(--aurea-preview-primary);
 	font-weight: 900;
 }
@@ -1171,7 +1321,7 @@
 	grid-template-columns: 30px 38px 30px;
 	width: max-content;
 	overflow: hidden;
-	border: 1px solid rgba(4, 15, 124, 0.14);
+	border: 1px solid rgba(0, 5, 58, 0.14);
 	border-radius: 10px;
 	text-align: center;
 }
@@ -1232,7 +1382,7 @@
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
 	overflow: hidden;
-	border: 1px solid rgba(4, 15, 124, 0.16);
+	border: 1px solid rgba(0, 5, 58, 0.16);
 	border-radius: 9px;
 	background: #ffffff;
 }
@@ -1308,7 +1458,7 @@
 	overflow: hidden;
 	height: 8px;
 	border-radius: 999px;
-	background: rgba(4, 15, 124, 0.12);
+	background: rgba(0, 5, 58, 0.12);
 }
 
 .portus-cart-for-woocommerce-preview__shipping i {
@@ -1341,7 +1491,7 @@
 	width: 28px;
 	height: 28px;
 	border-radius: 7px;
-	background: rgba(4, 15, 124, 0.08);
+	background: rgba(0, 5, 58, 0.08);
 }
 
 .portus-cart-for-woocommerce-preview__related-item button {
@@ -1411,12 +1561,21 @@
 }
 
 .portus-cart-for-woocommerce-preview__secondary {
-	border: 1px solid rgba(4, 15, 124, 0.24);
+	border: 1px solid rgba(0, 5, 58, 0.24);
 	background: #ffffff;
 	color: var(--aurea-preview-primary);
 }
 
 @media (max-width: 960px) {
+	.portus-cart-for-woocommerce-admin__icon-picker > div {
+		grid-template-columns: repeat(2, minmax(110px, 1fr));
+	}
+
+	.portus-cart-for-woocommerce-admin__field-grid,
+	.portus-cart-for-woocommerce-admin__colors {
+		grid-template-columns: 1fr;
+	}
+
 	.portus-cart-for-woocommerce-admin__tabs {
 		width: 100%;
 		max-width: 1180px;

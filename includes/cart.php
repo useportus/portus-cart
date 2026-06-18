@@ -36,20 +36,48 @@ if ( ! class_exists( 'Meu_Side_Cart_Cart' ) ) {
 		 * Renders the fixed root, floating trigger and side panel.
 		 */
 		public static function render_shell() {
-			$count                = self::get_count();
-			$css_variables        = class_exists( 'Meu_Side_Cart_Settings' ) ? Meu_Side_Cart_Settings::get_css_variables() : '';
-			$show_floating_button = class_exists( 'Meu_Side_Cart_Settings' ) ? Meu_Side_Cart_Settings::is_enabled( 'enabled_floating_button' ) : true;
-			$hide_on_product      = class_exists( 'Meu_Side_Cart_Settings' ) ? Meu_Side_Cart_Settings::is_enabled( 'hide_floating_on_product' ) : true;
-			$hide_floating_button = self::is_floating_button_hidden_context( $hide_on_product );
-			$floating_offset      = class_exists( 'Meu_Side_Cart_Settings' ) ? Meu_Side_Cart_Settings::get_int( 'floating_bottom_offset', 70, 240 ) : 116;
-			$floating_side        = class_exists( 'Meu_Side_Cart_Settings' ) ? Meu_Side_Cart_Settings::get( 'floating_side' ) : 'right';
-			$floating_side        = in_array( $floating_side, array( 'left', 'right' ), true ) ? $floating_side : 'right';
-			$button_style         = $css_variables . '--msc-floating-offset:' . $floating_offset . 'px;';
+			$has_settings          = class_exists( 'Meu_Side_Cart_Settings' );
+			$count                 = self::get_count();
+			$css_variables         = $has_settings ? Meu_Side_Cart_Settings::get_css_variables() : '';
+			$show_floating_button  = $has_settings ? Meu_Side_Cart_Settings::is_enabled( 'enabled_floating_button' ) : true;
+			$show_floating_desktop = $has_settings ? Meu_Side_Cart_Settings::is_enabled( 'show_floating_desktop' ) : true;
+			$show_floating_mobile  = $has_settings ? Meu_Side_Cart_Settings::is_enabled( 'show_floating_mobile' ) : true;
+			$hide_on_product       = $has_settings ? Meu_Side_Cart_Settings::is_enabled( 'hide_floating_on_product' ) : true;
+			$hide_floating_button  = self::is_floating_button_hidden_context( $hide_on_product );
+			$floating_offset       = $has_settings ? Meu_Side_Cart_Settings::get_int( 'floating_bottom_offset', 70, 240 ) : 116;
+			$floating_side         = $has_settings ? Meu_Side_Cart_Settings::get( 'floating_side' ) : 'right';
+			$floating_side         = in_array( $floating_side, array( 'left', 'right' ), true ) ? $floating_side : 'right';
+			$floating_icon         = $has_settings ? sanitize_key( Meu_Side_Cart_Settings::get( 'floating_icon' ) ) : 'bag-fill';
+			$floating_icon         = in_array( $floating_icon, array( 'bag-fill', 'cart', 'basket', 'bag' ), true ) ? $floating_icon : 'bag-fill';
+			$floating_shape        = $has_settings ? sanitize_key( Meu_Side_Cart_Settings::get( 'floating_shape' ) ) : 'circle';
+			$floating_shape        = in_array( $floating_shape, array( 'circle', 'rounded' ), true ) ? $floating_shape : 'circle';
+			$counter_position      = $has_settings ? sanitize_key( Meu_Side_Cart_Settings::get( 'floating_counter_position' ) ) : 'center';
+			$counter_position      = in_array( $counter_position, array( 'center', 'top-right', 'top-left' ), true ) ? $counter_position : 'center';
+			$counter_filled        = $has_settings && Meu_Side_Cart_Settings::is_enabled( 'floating_counter_background_enabled' );
+			$button_style          = $css_variables . '--msc-floating-offset:' . $floating_offset . 'px;';
+			$button_classes        = array(
+				'msc-floating-button',
+				'msc-floating-' . $floating_side,
+				'msc-floating-shape-' . $floating_shape,
+				'msc-floating-counter-' . $counter_position,
+			);
+
+			if ( $counter_filled ) {
+				$button_classes[] = 'msc-floating-counter-filled';
+			}
+
+			if ( ! $show_floating_desktop ) {
+				$button_classes[] = 'msc-floating-hide-desktop';
+			}
+
+			if ( ! $show_floating_mobile ) {
+				$button_classes[] = 'msc-floating-hide-mobile';
+			}
 			?>
 			<div class="msc-side-cart" id="meu-side-cart" data-msc-root data-count="<?php echo esc_attr( $count ); ?>" style="<?php echo esc_attr( $css_variables ); ?>">
-				<?php if ( $show_floating_button && ! $hide_floating_button ) : ?>
-					<button class="msc-floating-button msc-floating-<?php echo esc_attr( $floating_side ); ?>" type="button" data-msc-open data-msc-floating-offset="<?php echo esc_attr( $floating_offset ); ?>" style="<?php echo esc_attr( $button_style ); ?>" aria-expanded="false" aria-controls="msc-side-panel" aria-label="<?php esc_attr_e( 'Abrir carrinho', 'portus-cart-for-woocommerce' ); ?>">
-						<span class="msc-floating-icon" aria-hidden="true"><?php self::render_bag_icon(); ?></span>
+				<?php if ( $show_floating_button && ( $show_floating_desktop || $show_floating_mobile ) && ! $hide_floating_button ) : ?>
+					<button class="<?php echo esc_attr( implode( ' ', $button_classes ) ); ?>" type="button" data-msc-open data-msc-floating-offset="<?php echo esc_attr( $floating_offset ); ?>" style="<?php echo esc_attr( $button_style ); ?>" aria-expanded="false" aria-controls="msc-side-panel" aria-label="<?php esc_attr_e( 'Abrir carrinho', 'portus-cart-for-woocommerce' ); ?>">
+						<span class="msc-floating-icon" aria-hidden="true"><?php self::render_floating_icon( $floating_icon ); ?></span>
 						<?php echo wp_kses_post( self::get_count_badge_html() ); ?>
 					</button>
 				<?php endif; ?>
@@ -71,6 +99,18 @@ if ( ! class_exists( 'Meu_Side_Cart_Cart' ) ) {
 		private static function render_bag_icon() {
 			?>
 			<span class="msc-bag-icon" aria-hidden="true"></span>
+			<?php
+		}
+
+		/**
+		 * Renders one allow-listed local SVG mask for the floating trigger.
+		 *
+		 * @param string $icon Icon key.
+		 */
+		private static function render_floating_icon( $icon ) {
+			$icon = in_array( $icon, array( 'bag-fill', 'cart', 'basket', 'bag' ), true ) ? $icon : 'bag-fill';
+			?>
+			<span class="msc-floating-glyph msc-floating-glyph-<?php echo esc_attr( sanitize_html_class( $icon ) ); ?>" aria-hidden="true"></span>
 			<?php
 		}
 

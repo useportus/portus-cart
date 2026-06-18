@@ -13,9 +13,34 @@ defined( 'ABSPATH' ) || exit;
 	<div class="portus-cart-for-woocommerce-admin__preview-copy">
 		<h2><?php esc_html_e( 'Preview do carrinho', 'portus-cart-for-woocommerce' ); ?></h2>
 		<p><?php esc_html_e( 'Amostra visual com dados fictícios. Ela atualiza automaticamente enquanto você altera os campos desta tela.', 'portus-cart-for-woocommerce' ); ?></p>
+		<div class="portus-cart-for-woocommerce-admin__preview-devices" data-preview-device-switcher aria-label="<?php esc_attr_e( 'Dispositivo simulado', 'portus-cart-for-woocommerce' ); ?>">
+			<button type="button" data-preview-device="desktop" aria-pressed="true"><?php esc_html_e( 'Desktop', 'portus-cart-for-woocommerce' ); ?></button>
+			<button type="button" data-preview-device="mobile" aria-pressed="false"><?php esc_html_e( 'Celular', 'portus-cart-for-woocommerce' ); ?></button>
+		</div>
 	</div>
 
-	<div class="portus-cart-for-woocommerce-preview portus-cart-for-woocommerce-preview--floating-<?php echo esc_attr( $floating_side ); ?>" data-portus-cart-for-woocommerce-preview data-preview-shipping-price="<?php echo esc_attr( $remaining_price_text ); ?>" style="<?php echo esc_attr( $preview_style ); ?>">
+	<div
+		class="portus-cart-for-woocommerce-preview portus-cart-for-woocommerce-preview--floating-<?php echo esc_attr( $floating_side ); ?> portus-cart-for-woocommerce-preview--device-desktop"
+		data-portus-cart-for-woocommerce-preview
+		data-preview-device="desktop"
+		data-preview-shipping-price="<?php echo esc_attr( $remaining_price_text ); ?>"
+		data-preview-setting-primary-color="<?php echo esc_attr( $primary ); ?>"
+		data-preview-setting-enabled-floating-button="<?php echo esc_attr( $floating_enabled ? 'yes' : 'no' ); ?>"
+		data-preview-setting-floating-icon="<?php echo esc_attr( $floating_icon ); ?>"
+		data-preview-setting-floating-button-size="<?php echo esc_attr( $floating_button_size ); ?>"
+		data-preview-setting-floating-icon-size="<?php echo esc_attr( $floating_icon_size ); ?>"
+		data-preview-setting-floating-shape="<?php echo esc_attr( $floating_shape ); ?>"
+		data-preview-setting-floating-background-color="<?php echo esc_attr( $floating_background ); ?>"
+		data-preview-setting-floating-icon-color-mode="<?php echo esc_attr( $floating_icon_mode ); ?>"
+		data-preview-setting-floating-icon-color="<?php echo esc_attr( $settings['floating_icon_color'] ); ?>"
+		data-preview-setting-floating-counter-background-enabled="<?php echo esc_attr( $floating_counter_filled ? 'yes' : 'no' ); ?>"
+		data-preview-setting-floating-counter-background="<?php echo esc_attr( $floating_counter_background ); ?>"
+		data-preview-setting-floating-counter-text-color="<?php echo esc_attr( $floating_counter_color ); ?>"
+		data-preview-setting-floating-counter-position="<?php echo esc_attr( $floating_counter_position ); ?>"
+		data-preview-setting-show-floating-desktop="<?php echo esc_attr( $floating_desktop_visible ? 'yes' : 'no' ); ?>"
+		data-preview-setting-show-floating-mobile="<?php echo esc_attr( $floating_mobile_visible ? 'yes' : 'no' ); ?>"
+		style="<?php echo esc_attr( $preview_style ); ?>"
+	>
 		<div class="portus-cart-for-woocommerce-preview__overlay" aria-hidden="true"></div>
 		<div class="portus-cart-for-woocommerce-preview__panel">
 			<header class="portus-cart-for-woocommerce-preview__header">
@@ -108,9 +133,9 @@ defined( 'ABSPATH' ) || exit;
 				<a class="portus-cart-for-woocommerce-preview__secondary" data-preview-toggle="show_cart_button" data-preview-text="cart_button_text" href="#" onclick="return false;" <?php echo 'yes' === $settings['show_cart_button'] ? '' : 'hidden'; ?>><?php echo esc_html( $cart_button_text ); ?></a>
 			</footer>
 		</div>
-		<button class="portus-cart-for-woocommerce-preview__floating" data-preview-toggle="enabled_floating_button" type="button" disabled <?php echo $floating_enabled ? '' : 'hidden'; ?>>
-			<span class="portus-cart-for-woocommerce-preview__bag-icon" aria-hidden="true"></span>
-			<span><?php echo esc_html( $preview_count ); ?></span>
+		<button class="portus-cart-for-woocommerce-preview__floating portus-cart-for-woocommerce-preview__floating--<?php echo esc_attr( sanitize_html_class( $floating_shape ) ); ?> portus-cart-for-woocommerce-preview__floating--counter-<?php echo esc_attr( sanitize_html_class( $floating_counter_position ) ); ?><?php echo $floating_counter_filled ? ' portus-cart-for-woocommerce-preview__floating--counter-filled' : ''; ?>" data-preview-floating-button type="button" disabled <?php echo $floating_enabled && $floating_desktop_visible ? '' : 'hidden'; ?>>
+			<span class="portus-cart-for-woocommerce-preview__floating-icon portus-cart-for-woocommerce-preview__floating-icon--<?php echo esc_attr( sanitize_html_class( $floating_icon ) ); ?>" aria-hidden="true"></span>
+			<span class="portus-cart-for-woocommerce-preview__floating-count"><?php echo esc_html( $preview_count ); ?></span>
 		</button>
 	</div>
 </section>

@@ -5,7 +5,7 @@ Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 3.3.53
+Stable tag: 3.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ Portus Cart for WooCommerce adds a fast, responsive side cart to WooCommerce sto
 The plugin focuses on the essential cart workflow:
 
 * Responsive side cart panel.
-* Optional floating cart button with item counter.
+* Customizable floating cart button with four local SVG icons, sizes, shapes, colors, counter positions and responsive visibility.
 * Automatic opening after WooCommerce AJAX add to cart.
 * Quantity updates without reloading the page.
 * Apply and remove WooCommerce coupons without reloading the page.
@@ -52,7 +52,7 @@ Portus Cart uses WordPress and WooCommerce APIs, WooCommerce cart fragments and 
 After activation, open the Portus Cart settings page to adjust:
 
 * Cart title.
-* Floating cart button visibility and spacing.
+* Floating cart button icon, size, shape, colors, counter, responsive visibility and spacing.
 * Primary and accent colors.
 * Checkout, cart and empty cart button labels.
 * Optional custom URL for the empty cart button.
@@ -105,21 +105,24 @@ Cart content, quantities and totals are handled by WooCommerce. Store owners sho
 
 == Screenshots ==
 
-1. Side cart panel with products, quantity controls, low stock notice and checkout action.
+1. Side cart panel with products, quantity controls, coupon field, totals and checkout action.
 2. Empty side cart state with a clear action to continue shopping.
-3. Mobile side cart experience on a phone viewport.
-4. Desktop shop page with the side cart overlay active.
-5. Admin settings dashboard with version, edition, theme and floating button status.
+3. Mobile side cart experience in a phone viewport.
+4. Desktop page with the side cart overlay active.
+5. Visual settings for colors and cart identity.
 6. About / Portus admin screen with product identity and support links.
 7. Conversion settings for checkout and cart call-to-action labels.
 8. Plugin health screen with WordPress, PHP and file diagnostics.
 
 == Changelog ==
 
-= 3.3.53 =
-* Adds an optional custom URL setting for the empty cart button while keeping the WooCommerce shop page as the default fallback.
+= 3.4.0 =
+* Adds four local Bootstrap SVG icons and complete visual controls for the floating cart button.
+* Adds button and icon sizes, circular or rounded-square shape, colors and counter positioning.
+* Adds independent desktop and mobile visibility with a live device preview.
+* Preserves the previous floating button appearance as the default after upgrading.
 
 == Upgrade Notice ==
 
-= 3.3.53 =
-Adds an admin setting for the empty cart button URL.
+= 3.4.0 =
+Adds floating button personalization while preserving the previous appearance by default.

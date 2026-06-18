@@ -131,13 +131,26 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				'enabled_floating_button'      => 'yes',
 				'hide_floating_on_product'     => 'yes',
 				'floating_bottom_offset'       => 116,
+				'floating_icon'                => 'bag-fill',
+				'floating_button_size'         => 50,
+				'floating_icon_size'           => 28,
+				'floating_shape'               => 'circle',
+				'floating_background_color'    => '#FFFFFF',
+				'floating_icon_color_mode'     => 'primary',
+				'floating_icon_color'          => '#00053A',
+				'floating_counter_background_enabled' => 'no',
+				'floating_counter_background'  => '#C0A821',
+				'floating_counter_text_color'  => '#FFFFFF',
+				'floating_counter_position'    => 'center',
+				'show_floating_desktop'        => 'yes',
+				'show_floating_mobile'         => 'yes',
 				'cart_z_index'                 => 999999,
 				'panel_width'                  => 440,
 				'floating_side'                => 'right',
 				'overlay_opacity'              => 48,
 				'auto_open_on_add'             => 'yes',
-				'primary_color'                => '#040f7c',
-				'accent_color'                 => '#CFB53B',
+				'primary_color'                => '#00053A',
+				'accent_color'                 => '#C0A821',
 				'checkout_button_text'         => __( 'Finalizar compra', 'portus-cart-for-woocommerce' ),
 				'show_cart_button'             => 'yes',
 				'cart_button_text'             => __( 'Ver carrinho', 'portus-cart-for-woocommerce' ),
@@ -146,6 +159,20 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				'show_low_stock_alerts'        => 'yes',
 				'low_stock_threshold'          => 2,
 				'delete_settings_on_uninstall' => 'no',
+			);
+		}
+
+		/**
+		 * Returns the local SVG icons available for the floating trigger.
+		 *
+		 * @return array<string,string>
+		 */
+		private static function get_floating_icon_options() {
+			return array(
+				'bag-fill' => __( 'Sacola atual', 'portus-cart-for-woocommerce' ),
+				'cart'     => __( 'Carrinho clássico', 'portus-cart-for-woocommerce' ),
+				'basket'   => __( 'Cesta', 'portus-cart-for-woocommerce' ),
+				'bag'      => __( 'Sacola minimalista', 'portus-cart-for-woocommerce' ),
 			);
 		}
 
@@ -215,7 +242,31 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				return $color;
 			}
 
-			return isset( $defaults[ $key ] ) ? $defaults[ $key ] : '#040f7c';
+			return isset( $defaults[ $key ] ) ? $defaults[ $key ] : '#00053A';
+		}
+
+		/**
+		 * Converts a sanitized hexadecimal color to an RGB triplet.
+		 *
+		 * @param string $color Hexadecimal color.
+		 * @return int[]
+		 */
+		private static function hex_to_rgb( $color ) {
+			$hex = ltrim( (string) sanitize_hex_color( $color ), '#' );
+
+			if ( 3 === strlen( $hex ) ) {
+				$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+			}
+
+			if ( 6 !== strlen( $hex ) ) {
+				return array( 255, 255, 255 );
+			}
+
+			return array(
+				hexdec( substr( $hex, 0, 2 ) ),
+				hexdec( substr( $hex, 2, 2 ) ),
+				hexdec( substr( $hex, 4, 2 ) ),
+			);
 		}
 
 		/**
@@ -224,14 +275,21 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 		 * @return string
 		 */
 		public static function get_css_variables() {
-			$primary         = self::get_color( 'primary_color' );
-			$accent          = self::get_color( 'accent_color' );
-			$cart_z_index    = self::get_int( 'cart_z_index', 1000, 2147483000 );
-			$overlay_z_index = max( 1, $cart_z_index - 1 );
-			$panel_width     = self::get_int( 'panel_width', 320, 720 );
-			$overlay_opacity = self::get_int( 'overlay_opacity', 0, 90 ) / 100;
+			$primary                    = self::get_color( 'primary_color' );
+			$accent                     = self::get_color( 'accent_color' );
+			$cart_z_index               = self::get_int( 'cart_z_index', 1000, 2147483000 );
+			$overlay_z_index            = max( 1, $cart_z_index - 1 );
+			$panel_width                = self::get_int( 'panel_width', 320, 720 );
+			$overlay_opacity            = self::get_int( 'overlay_opacity', 0, 90 ) / 100;
+			$floating_button_size       = self::get_int( 'floating_button_size', 44, 80 );
+			$floating_icon_size         = min( self::get_int( 'floating_icon_size', 16, 40 ), $floating_button_size - 8 );
+			$floating_background_rgb    = self::hex_to_rgb( self::get_color( 'floating_background_color' ) );
+			$floating_icon_color_mode   = self::get( 'floating_icon_color_mode' );
+			$floating_icon_color        = 'custom' === $floating_icon_color_mode ? self::get_color( 'floating_icon_color' ) : $primary;
+			$floating_counter_color     = self::get_color( 'floating_counter_text_color' );
+			$floating_counter_background = self::is_enabled( 'floating_counter_background_enabled' ) ? self::get_color( 'floating_counter_background' ) : 'transparent';
 
-			return sprintf(
+			$variables = sprintf(
 				'--msc-blue:%1$s;--msc-gold:%2$s;--msc-product-title:%1$s;--msc-panel-z-index:%3$d;--msc-overlay-z-index:%4$d;--msc-panel-width:%5$dpx;--msc-overlay-opacity:%6$s;--msc-floating-z-index:2147482900;',
 				$primary,
 				$accent,
@@ -240,6 +298,18 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				$panel_width,
 				rtrim( rtrim( number_format( $overlay_opacity, 2, '.', '' ), '0' ), '.' )
 			);
+
+			$variables .= sprintf(
+				'--msc-floating-button-size:%1$dpx;--msc-floating-icon-size:%2$dpx;--msc-floating-background-rgb:%3$s;--msc-floating-icon-color:%4$s;--msc-floating-counter-background:%5$s;--msc-floating-counter-color:%6$s;',
+				$floating_button_size,
+				$floating_icon_size,
+				implode( ',', $floating_background_rgb ),
+				$floating_icon_color,
+				$floating_counter_background,
+				$floating_counter_color
+			);
+
+			return $variables;
 		}
 
 		/**
@@ -266,6 +336,8 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				$value = array_key_exists( $key, $input ) ? $input[ $key ] : ( isset( $current[ $key ] ) ? $current[ $key ] : null );
 				$sanitized[ $key ] = self::sanitize_value_by_key( $key, $value );
 			}
+
+			$sanitized = self::normalize_floating_sizes( $sanitized );
 
 
 			return wp_parse_args( $sanitized, self::get_defaults() );
@@ -345,6 +417,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 			update_option( self::OPTION_NAME, self::get_defaults() );
 			self::redirect_with_message( 'reset' );
 		}
+
 
 
 
@@ -457,7 +530,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 		private static function get_tab_fields() {
 			return array(
 				'general'    => array( 'cart_title', 'enabled_floating_button', 'hide_floating_on_product', 'floating_bottom_offset' ),
-				'appearance' => array( 'primary_color', 'accent_color' ),
+				'appearance' => array( 'primary_color', 'accent_color', 'floating_icon', 'floating_button_size', 'floating_icon_size', 'floating_shape', 'floating_background_color', 'floating_icon_color_mode', 'floating_icon_color', 'floating_counter_background_enabled', 'floating_counter_background', 'floating_counter_text_color', 'floating_counter_position', 'show_floating_desktop', 'show_floating_mobile' ),
 				'buttons'    => array( 'checkout_button_text', 'show_cart_button', 'cart_button_text', 'empty_button_text', 'empty_button_url' ),
 				'stock'      => array( 'show_low_stock_alerts', 'low_stock_threshold' ),
 				'advanced'   => array( 'delete_settings_on_uninstall' ),
@@ -477,6 +550,9 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 			return array(
 				'enabled_floating_button',
 				'hide_floating_on_product',
+				'floating_counter_background_enabled',
+				'show_floating_desktop',
+				'show_floating_mobile',
 				'auto_open_on_add',
 				'show_cart_button',
 				'show_low_stock_alerts',
@@ -604,6 +680,67 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 					?>
 				</div>
 				<p class="description"><?php esc_html_e( 'Essas cores aparecem no carrinho, no botão flutuante e no preview do admin.', 'portus-cart-for-woocommerce' ); ?></p>
+			</section>
+
+			<section class="portus-cart-for-woocommerce-admin__card">
+				<h2><?php esc_html_e( 'Botão flutuante', 'portus-cart-for-woocommerce' ); ?></h2>
+				<p class="description"><?php esc_html_e( 'Personalize o atalho que abre o carrinho. Os ícones são SVGs locais do Bootstrap Icons.', 'portus-cart-for-woocommerce' ); ?></p>
+
+				<?php self::render_floating_icon_picker( $settings['floating_icon'] ); ?>
+
+				<div class="portus-cart-for-woocommerce-admin__field-grid">
+					<?php
+					self::render_range_input( 'floating_button_size', __( 'Tamanho do botão', 'portus-cart-for-woocommerce' ), $settings['floating_button_size'], 44, 80, 2, 'px' );
+					self::render_range_input( 'floating_icon_size', __( 'Tamanho do ícone', 'portus-cart-for-woocommerce' ), $settings['floating_icon_size'], 16, 40, 1, 'px' );
+					self::render_select_input(
+						'floating_shape',
+						__( 'Formato do botão', 'portus-cart-for-woocommerce' ),
+						$settings['floating_shape'],
+						array(
+							'circle' => __( 'Circular', 'portus-cart-for-woocommerce' ),
+							'rounded' => __( 'Quadrado arredondado', 'portus-cart-for-woocommerce' ),
+						)
+					);
+					self::render_select_input(
+						'floating_icon_color_mode',
+						__( 'Cor do ícone', 'portus-cart-for-woocommerce' ),
+						$settings['floating_icon_color_mode'],
+						array(
+							'primary' => __( 'Usar cor principal', 'portus-cart-for-woocommerce' ),
+							'custom'  => __( 'Usar cor personalizada', 'portus-cart-for-woocommerce' ),
+						)
+					);
+					?>
+				</div>
+
+				<div class="portus-cart-for-woocommerce-admin__colors portus-cart-for-woocommerce-admin__floating-colors">
+					<?php
+					self::render_color_input( 'floating_background_color', __( 'Fundo do botão', 'portus-cart-for-woocommerce' ), $settings['floating_background_color'] );
+					self::render_color_input( 'floating_icon_color', __( 'Cor personalizada do ícone', 'portus-cart-for-woocommerce' ), $settings['floating_icon_color'] );
+					self::render_color_input( 'floating_counter_background', __( 'Fundo do contador', 'portus-cart-for-woocommerce' ), $settings['floating_counter_background'] );
+					self::render_color_input( 'floating_counter_text_color', __( 'Número do contador', 'portus-cart-for-woocommerce' ), $settings['floating_counter_text_color'] );
+					?>
+				</div>
+
+				<?php self::render_checkbox_input( 'floating_counter_background_enabled', __( 'Mostrar fundo colorido no contador', 'portus-cart-for-woocommerce' ), $settings['floating_counter_background_enabled'] ); ?>
+				<?php
+				self::render_select_input(
+					'floating_counter_position',
+					__( 'Posição do contador', 'portus-cart-for-woocommerce' ),
+					$settings['floating_counter_position'],
+					array(
+						'center'    => __( 'Sobre o ícone (padrão atual)', 'portus-cart-for-woocommerce' ),
+						'top-right' => __( 'Canto superior direito', 'portus-cart-for-woocommerce' ),
+						'top-left'  => __( 'Canto superior esquerdo', 'portus-cart-for-woocommerce' ),
+					)
+				);
+				?>
+
+				<div class="portus-cart-for-woocommerce-admin__visibility-options">
+					<?php self::render_checkbox_input( 'show_floating_desktop', __( 'Mostrar em computadores', 'portus-cart-for-woocommerce' ), $settings['show_floating_desktop'] ); ?>
+					<?php self::render_checkbox_input( 'show_floating_mobile', __( 'Mostrar em celulares e tablets', 'portus-cart-for-woocommerce' ), $settings['show_floating_mobile'] ); ?>
+				</div>
+				<p class="description"><?php esc_html_e( 'Lado e distância inferior continuam disponíveis nas abas Carrinho e Compatibilidade.', 'portus-cart-for-woocommerce' ); ?></p>
 			</section>
 			<?php
 		}
@@ -1153,7 +1290,31 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 
 			$primary             = self::sanitize_value_by_key( 'primary_color', $settings['primary_color'] );
 			$accent              = self::sanitize_value_by_key( 'accent_color', $settings['accent_color'] );
-			$preview_style       = sprintf( '--aurea-preview-primary:%1$s;--aurea-preview-accent:%2$s;', $primary, $accent );
+			$floating_icon       = self::sanitize_value_by_key( 'floating_icon', $settings['floating_icon'] );
+			$floating_button_size = self::sanitize_value_by_key( 'floating_button_size', $settings['floating_button_size'] );
+			$floating_icon_size  = min( self::sanitize_value_by_key( 'floating_icon_size', $settings['floating_icon_size'] ), $floating_button_size - 8 );
+			$floating_shape      = self::sanitize_value_by_key( 'floating_shape', $settings['floating_shape'] );
+			$floating_background = self::sanitize_value_by_key( 'floating_background_color', $settings['floating_background_color'] );
+			$floating_background_rgb = self::hex_to_rgb( $floating_background );
+			$floating_icon_mode  = self::sanitize_value_by_key( 'floating_icon_color_mode', $settings['floating_icon_color_mode'] );
+			$floating_icon_color = 'custom' === $floating_icon_mode ? self::sanitize_value_by_key( 'floating_icon_color', $settings['floating_icon_color'] ) : $primary;
+			$floating_counter_background = self::sanitize_value_by_key( 'floating_counter_background', $settings['floating_counter_background'] );
+			$floating_counter_color = self::sanitize_value_by_key( 'floating_counter_text_color', $settings['floating_counter_text_color'] );
+			$floating_counter_position = self::sanitize_value_by_key( 'floating_counter_position', $settings['floating_counter_position'] );
+			$floating_counter_filled = 'yes' === $settings['floating_counter_background_enabled'];
+			$floating_desktop_visible = 'yes' === $settings['show_floating_desktop'];
+			$floating_mobile_visible = 'yes' === $settings['show_floating_mobile'];
+			$preview_style       = sprintf(
+				'--aurea-preview-primary:%1$s;--aurea-preview-accent:%2$s;--aurea-preview-floating-button-size:%3$dpx;--aurea-preview-floating-icon-size:%4$dpx;--aurea-preview-floating-background-rgb:%5$s;--aurea-preview-floating-icon-color:%6$s;--aurea-preview-floating-counter-background:%7$s;--aurea-preview-floating-counter-color:%8$s;',
+				$primary,
+				$accent,
+				$floating_button_size,
+				$floating_icon_size,
+				implode( ',', $floating_background_rgb ),
+				$floating_icon_color,
+				$floating_counter_background,
+				$floating_counter_color
+			);
 			$checkout_text       = isset( $settings['checkout_button_text'] ) ? $settings['checkout_button_text'] : __( 'Finalizar compra', 'portus-cart-for-woocommerce' );
 			$cart_button_text    = isset( $settings['cart_button_text'] ) ? $settings['cart_button_text'] : __( 'Ver carrinho', 'portus-cart-for-woocommerce' );
 			$cart_title          = isset( $settings['cart_title'] ) ? $settings['cart_title'] : __( 'Meu carrinho', 'portus-cart-for-woocommerce' );
@@ -1315,7 +1476,29 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				$sanitized[ $key ] = self::sanitize_value_by_key( $key, $value );
 			}
 
+			$sanitized = self::normalize_floating_sizes( $sanitized );
+
 			return wp_parse_args( $sanitized, $defaults );
+		}
+
+		/**
+		 * Keeps the floating icon inside the configured button dimensions.
+		 *
+		 * @param array $settings Sanitized settings.
+		 * @return array
+		 */
+		private static function normalize_floating_sizes( $settings ) {
+			$defaults    = self::get_defaults();
+			$button_size = isset( $settings['floating_button_size'] ) ? absint( $settings['floating_button_size'] ) : $defaults['floating_button_size'];
+			$icon_size   = isset( $settings['floating_icon_size'] ) ? absint( $settings['floating_icon_size'] ) : $defaults['floating_icon_size'];
+
+			$button_size = max( 44, min( 80, $button_size ) );
+			$icon_size   = max( 16, min( 40, $icon_size, $button_size - 8 ) );
+
+			$settings['floating_button_size'] = $button_size;
+			$settings['floating_icon_size']   = $icon_size;
+
+			return $settings;
 		}
 
 		/**
@@ -1338,6 +1521,22 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				}
 
 				return max( 70, min( 240, absint( $value ) ) );
+			}
+
+			if ( 'floating_button_size' === $key ) {
+				if ( ! is_scalar( $value ) ) {
+					return $defaults[ $key ];
+				}
+
+				return max( 44, min( 80, absint( $value ) ) );
+			}
+
+			if ( 'floating_icon_size' === $key ) {
+				if ( ! is_scalar( $value ) ) {
+					return $defaults[ $key ];
+				}
+
+				return max( 16, min( 40, absint( $value ) ) );
 			}
 
 			if ( 'cart_z_index' === $key ) {
@@ -1370,6 +1569,31 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				return in_array( $side, array( 'left', 'right' ), true ) ? $side : $defaults[ $key ];
 			}
 
+			if ( 'floating_icon' === $key ) {
+				$icon  = is_scalar( $value ) ? sanitize_key( $value ) : $defaults[ $key ];
+				$valid = array_keys( self::get_floating_icon_options() );
+
+				return in_array( $icon, $valid, true ) ? $icon : $defaults[ $key ];
+			}
+
+			if ( 'floating_shape' === $key ) {
+				$shape = is_scalar( $value ) ? sanitize_key( $value ) : $defaults[ $key ];
+
+				return in_array( $shape, array( 'circle', 'rounded' ), true ) ? $shape : $defaults[ $key ];
+			}
+
+			if ( 'floating_icon_color_mode' === $key ) {
+				$mode = is_scalar( $value ) ? sanitize_key( $value ) : $defaults[ $key ];
+
+				return in_array( $mode, array( 'primary', 'custom' ), true ) ? $mode : $defaults[ $key ];
+			}
+
+			if ( 'floating_counter_position' === $key ) {
+				$position = is_scalar( $value ) ? sanitize_key( $value ) : $defaults[ $key ];
+
+				return in_array( $position, array( 'center', 'top-right', 'top-left' ), true ) ? $position : $defaults[ $key ];
+			}
+
 			if ( 'low_stock_threshold' === $key ) {
 				if ( ! is_scalar( $value ) ) {
 					return $defaults[ $key ];
@@ -1379,7 +1603,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 			}
 
 
-			if ( in_array( $key, array( 'primary_color', 'accent_color' ), true ) ) {
+			if ( in_array( $key, array( 'primary_color', 'accent_color', 'floating_background_color', 'floating_icon_color', 'floating_counter_background', 'floating_counter_text_color' ), true ) ) {
 				if ( ! is_scalar( $value ) ) {
 					return $defaults[ $key ];
 				}
@@ -1486,6 +1710,33 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				<span><?php echo esc_html( $label ); ?></span>
 				<input type="text" name="<?php echo esc_attr( self::OPTION_NAME . '[' . $key . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>" />
 			</label>
+			<?php
+		}
+
+		/**
+		 * Renders the allow-listed local SVG selector for the floating button.
+		 *
+		 * @param string $value Current icon key.
+		 */
+		private static function render_floating_icon_picker( $value ) {
+			$options = self::get_floating_icon_options();
+			$value   = is_scalar( $value ) ? sanitize_key( (string) $value ) : 'bag-fill';
+			$value   = array_key_exists( $value, $options ) ? $value : 'bag-fill';
+			?>
+			<fieldset class="portus-cart-for-woocommerce-admin__icon-picker">
+				<legend><?php esc_html_e( 'Ícone do botão', 'portus-cart-for-woocommerce' ); ?></legend>
+				<div>
+					<?php foreach ( $options as $icon_key => $icon_label ) : ?>
+						<label>
+							<input type="radio" name="<?php echo esc_attr( self::OPTION_NAME . '[floating_icon]' ); ?>" value="<?php echo esc_attr( $icon_key ); ?>" <?php checked( $value, $icon_key ); ?> />
+							<span class="portus-cart-for-woocommerce-admin__icon-choice" aria-hidden="true">
+								<i class="portus-cart-for-woocommerce-admin__floating-icon portus-cart-for-woocommerce-admin__floating-icon--<?php echo esc_attr( sanitize_html_class( $icon_key ) ); ?>"></i>
+							</span>
+							<strong><?php echo esc_html( $icon_label ); ?></strong>
+						</label>
+					<?php endforeach; ?>
+				</div>
+			</fieldset>
 			<?php
 		}
 

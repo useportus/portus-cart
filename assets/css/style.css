@@ -1,14 +1,14 @@
 .msc-side-cart {
-	--msc-blue: #040f7c;
-	--msc-gold: #CFB53B;
+	--msc-blue: #00053A;
+	--msc-gold: #C0A821;
 	--msc-bg: #ffffff;
 	--msc-text: #111827;
 	--msc-muted: #6b7280;
 	--msc-border: #e5e7eb;
 	--msc-soft: #f7f8fb;
 	--msc-danger: #b91c1c;
-	--msc-product-title: #040f7c;
-	--msc-shadow: 0 24px 80px rgba(4, 15, 124, 0.26);
+	--msc-product-title: #00053A;
+	--msc-shadow: 0 24px 80px rgba(0, 5, 58, 0.26);
 	--msc-panel-width: 440px;
 	--msc-panel-z-index: 999999;
 	--msc-overlay-z-index: 999998;
@@ -104,14 +104,13 @@
 	bottom: calc(env(safe-area-inset-bottom) + var(--msc-floating-offset, 116px));
 	z-index: var(--msc-floating-z-index, 2147482900);
 	display: inline-grid !important;
-	width: 50px;
-	height: 50px;
+	width: var(--msc-floating-button-size, 50px);
+	height: var(--msc-floating-button-size, 50px);
 	place-items: center;
 	border: 0 !important;
-	border-radius: 50% !important;
 	padding: 0 !important;
-	background: rgba(var(--bgcolor-white-rgb, 255, 255, 255), 0.9) !important;
-	color: var(--msc-blue) !important;
+	background: rgba(var(--msc-floating-background-rgb, 255, 255, 255), 0.9) !important;
+	color: var(--msc-floating-icon-color, var(--msc-blue)) !important;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.17) !important;
 	cursor: pointer;
 	font: inherit;
@@ -121,6 +120,14 @@
 	visibility: visible !important;
 	backface-visibility: hidden;
 	-webkit-backface-visibility: hidden;
+}
+
+.msc-floating-button.msc-floating-shape-circle {
+	border-radius: 50% !important;
+}
+
+.msc-floating-button.msc-floating-shape-rounded {
+	border-radius: 12px !important;
 }
 
 .msc-floating-button.msc-floating-left {
@@ -141,8 +148,8 @@ body.msc-lock-scroll .msc-floating-button {
 
 .msc-floating-button:hover,
 .msc-floating-button:focus-visible {
-	background: rgba(var(--bgcolor-white-rgb, 255, 255, 255), 0.96) !important;
-	color: var(--msc-blue) !important;
+	background: rgba(var(--msc-floating-background-rgb, 255, 255, 255), 0.96) !important;
+	color: var(--msc-floating-icon-color, var(--msc-blue)) !important;
 	outline: 0 !important;
 }
 
@@ -152,18 +159,24 @@ body.msc-lock-scroll .msc-floating-button {
 	display: inline-grid;
 	place-items: center;
 	filter: none;
-	color: var(--msc-blue) !important;
-	font-size: 28px;
+	color: var(--msc-floating-icon-color, var(--msc-blue)) !important;
+	font-size: var(--msc-floating-icon-size, 28px);
 	line-height: 1;
 }
 
-.msc-floating-button .msc-floating-icon i {
-	color: var(--msc-blue) !important;
+.msc-floating-glyph {
+	display: block;
+	width: 1em;
+	height: 1em;
+	background: currentColor;
+	-webkit-mask: var(--msc-floating-icon-mask) center / contain no-repeat;
+	mask: var(--msc-floating-icon-mask) center / contain no-repeat;
 }
 
-.msc-floating-button .msc-bag-icon {
-	color: var(--msc-blue) !important;
-}
+.msc-floating-glyph-bag-fill { --msc-floating-icon-mask: url("../icons/floating-bag-fill.svg"); }
+.msc-floating-glyph-cart { --msc-floating-icon-mask: url("../icons/floating-cart.svg"); }
+.msc-floating-glyph-basket { --msc-floating-icon-mask: url("../icons/floating-basket.svg"); }
+.msc-floating-glyph-bag { --msc-floating-icon-mask: url("../icons/floating-bag.svg"); }
 
 .msc-floating-count {
 	position: absolute;
@@ -178,13 +191,47 @@ body.msc-lock-scroll .msc-floating-button {
 	place-items: center;
 	border: 0;
 	border-radius: 0;
-	background: transparent;
-	color: #ffffff;
+	background: var(--msc-floating-counter-background, transparent);
+	color: var(--msc-floating-counter-color, #ffffff);
 	font-size: 10px;
 	font-weight: 900;
 	line-height: 1;
 	box-shadow: none;
 	pointer-events: none;
+}
+
+.msc-floating-button.msc-floating-counter-filled .msc-floating-count {
+	min-width: 18px;
+	height: 18px;
+	padding: 0 4px;
+	border-radius: 999px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.msc-floating-button.msc-floating-counter-top-right .msc-floating-count {
+	top: -5px;
+	right: -5px;
+	left: auto;
+	transform: none;
+}
+
+.msc-floating-button.msc-floating-counter-top-left .msc-floating-count {
+	top: -5px;
+	right: auto;
+	left: -5px;
+	transform: none;
+}
+
+@media (min-width: 783px) {
+	.msc-floating-button.msc-floating-hide-desktop {
+		display: none !important;
+	}
+}
+
+@media (max-width: 782px) {
+	.msc-floating-button.msc-floating-hide-mobile {
+		display: none !important;
+	}
 }
 
 .msc-overlay {
@@ -395,7 +442,7 @@ body.msc-lock-scroll {
 }
 
 .msc-notices .woocommerce-message {
-	border-color: rgba(4, 15, 124, 0.18);
+	border-color: rgba(0, 5, 58, 0.18);
 }
 
 .msc-body {
@@ -462,9 +509,9 @@ body.msc-lock-scroll {
 	grid-template-columns: 42px minmax(0, 1fr) auto;
 	align-items: center;
 	gap: 12px;
-	border-color: rgba(207, 181, 59, 0.42);
+	border-color: rgba(192, 168, 33, 0.42);
 	background: #ffffff;
-	box-shadow: inset 4px 0 0 #32bcad, 0 8px 20px rgba(4, 15, 124, 0.06);
+	box-shadow: inset 4px 0 0 #32bcad, 0 8px 20px rgba(0, 5, 58, 0.06);
 }
 
 .msc-pix-icon {
@@ -503,7 +550,7 @@ body.msc-lock-scroll {
 	display: inline-grid;
 	min-height: 28px;
 	place-items: center;
-	border: 1px solid rgba(207, 181, 59, 0.52);
+	border: 1px solid rgba(192, 168, 33, 0.52);
 	border-radius: 999px;
 	padding: 5px 10px;
 	background: var(--msc-blue);
@@ -517,9 +564,9 @@ body.msc-lock-scroll {
 .msc-delivery-benefit {
 	display: grid;
 	gap: 12px;
-	border-color: rgba(4, 15, 124, 0.16);
+	border-color: rgba(0, 5, 58, 0.16);
 	background: #ffffff;
-	box-shadow: inset 4px 0 0 var(--msc-gold), 0 8px 20px rgba(4, 15, 124, 0.05);
+	box-shadow: inset 4px 0 0 var(--msc-gold), 0 8px 20px rgba(0, 5, 58, 0.05);
 }
 
 .msc-delivery-main {
@@ -534,9 +581,9 @@ body.msc-lock-scroll {
 	width: 42px;
 	height: 42px;
 	place-items: center;
-	border: 1px solid rgba(4, 15, 124, 0.14);
+	border: 1px solid rgba(0, 5, 58, 0.14);
 	border-radius: 10px;
-	background: rgba(4, 15, 124, 0.06);
+	background: rgba(0, 5, 58, 0.06);
 	color: var(--msc-blue);
 	font-size: 20px;
 }
@@ -573,7 +620,7 @@ body.msc-lock-scroll {
 	align-items: center;
 	justify-content: center;
 	gap: 7px;
-	border: 1px solid rgba(4, 15, 124, 0.1);
+	border: 1px solid rgba(0, 5, 58, 0.1);
 	border-radius: 8px;
 	padding: 7px 9px;
 	background: var(--msc-soft);
@@ -703,7 +750,7 @@ body.msc-lock-scroll {
 
 .msc-variation-editor {
 	margin-top: 8px;
-	border: 1px solid rgba(4, 15, 124, 0.12);
+	border: 1px solid rgba(0, 5, 58, 0.12);
 	border-radius: 8px;
 	background: #ffffff;
 }
@@ -748,7 +795,7 @@ body.msc-lock-scroll {
 .msc-side-cart .msc-variation-select {
 	width: 100%;
 	min-height: 34px;
-	border: 1px solid rgba(4, 15, 124, 0.16);
+	border: 1px solid rgba(0, 5, 58, 0.16);
 	border-radius: 8px;
 	padding: 0 10px;
 	background: #ffffff;
@@ -760,7 +807,7 @@ body.msc-lock-scroll {
 }
 
 .msc-side-cart .msc-variation-select:focus {
-	border-color: rgba(207, 181, 59, 0.58);
+	border-color: rgba(192, 168, 33, 0.58);
 	box-shadow: none;
 }
 
@@ -824,7 +871,7 @@ body.msc-lock-scroll {
 	display: inline-grid;
 	grid-template-columns: 34px 46px 34px;
 	overflow: hidden;
-	border: 1px solid rgba(4, 15, 124, 0.14);
+	border: 1px solid rgba(0, 5, 58, 0.14);
 	border-radius: 10px;
 	background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
 }
@@ -863,7 +910,7 @@ body.msc-lock-scroll {
 }
 
 .msc-quantity button:disabled {
-	background: rgba(4, 15, 124, 0.32);
+	background: rgba(0, 5, 58, 0.32);
 	color: #ffffff;
 	cursor: not-allowed;
 }
@@ -873,8 +920,8 @@ body.msc-lock-scroll {
 	min-height: 34px;
 	min-width: 0;
 	place-items: center;
-	border-right: 1px solid rgba(4, 15, 124, 0.1);
-	border-left: 1px solid rgba(4, 15, 124, 0.1);
+	border-right: 1px solid rgba(0, 5, 58, 0.1);
+	border-left: 1px solid rgba(0, 5, 58, 0.1);
 	color: var(--msc-blue);
 	font-size: 15px;
 	font-weight: 900;
@@ -938,10 +985,10 @@ body.msc-lock-scroll {
 	align-items: center;
 	gap: 7px;
 	margin: 8px 0 0;
-	border: 1px solid rgba(207, 181, 59, 0.38);
+	border: 1px solid rgba(192, 168, 33, 0.38);
 	border-radius: 8px;
 	padding: 7px 9px;
-	background: rgba(207, 181, 59, 0.1);
+	background: rgba(192, 168, 33, 0.1);
 	color: var(--msc-blue);
 	font-size: 12px;
 	font-weight: 800;
@@ -979,7 +1026,7 @@ body.msc-lock-scroll {
 
 .msc-inline-form input:focus,
 .msc-shipping-form input:focus {
-	border-color: rgba(207, 181, 59, 0.58);
+	border-color: rgba(192, 168, 33, 0.58);
 	outline: 0;
 }
 
@@ -1069,10 +1116,10 @@ body.msc-lock-scroll {
 	display: grid;
 	gap: 8px;
 	margin-top: 12px;
-	border: 1px solid rgba(207, 181, 59, 0.34);
+	border: 1px solid rgba(192, 168, 33, 0.34);
 	border-radius: 8px;
 	padding: 10px;
-	background: rgba(207, 181, 59, 0.08);
+	background: rgba(192, 168, 33, 0.08);
 }
 
 .msc-free-shipping-copy {
@@ -1093,7 +1140,7 @@ body.msc-lock-scroll {
 	overflow: hidden;
 	height: 8px;
 	border-radius: 999px;
-	background: rgba(4, 15, 124, 0.12);
+	background: rgba(0, 5, 58, 0.12);
 }
 
 .msc-free-shipping-track span {
@@ -1127,7 +1174,7 @@ body.msc-lock-scroll {
 	grid-template-columns: 22px minmax(0, 1fr);
 	align-items: center;
 	justify-content: initial;
-	border: 1px solid rgba(4, 15, 124, 0.12);
+	border: 1px solid rgba(0, 5, 58, 0.12);
 	border-radius: 8px;
 	padding: 10px 12px;
 	background: #f9fafb;
@@ -1140,8 +1187,8 @@ body.msc-lock-scroll {
 
 .msc-rate:hover,
 .msc-rate:focus-within {
-	border-color: rgba(207, 181, 59, 0.58);
-	background: rgba(207, 181, 59, 0.08);
+	border-color: rgba(192, 168, 33, 0.58);
+	background: rgba(192, 168, 33, 0.08);
 	box-shadow: none;
 }
 
@@ -1159,7 +1206,7 @@ body.msc-lock-scroll {
 	width: 18px;
 	height: 18px;
 	place-items: center;
-	border: 2px solid rgba(4, 15, 124, 0.34);
+	border: 2px solid rgba(0, 5, 58, 0.34);
 	border-radius: 50%;
 	background: #ffffff;
 	transition: border-color 160ms ease, background 160ms ease;
@@ -1178,7 +1225,7 @@ body.msc-lock-scroll {
 
 .msc-rate input:checked + .msc-rate-marker {
 	border-color: var(--msc-blue);
-	background: rgba(4, 15, 124, 0.06);
+	background: rgba(0, 5, 58, 0.06);
 }
 
 .msc-rate input:checked + .msc-rate-marker::after {
@@ -1263,36 +1310,50 @@ body.msc-lock-scroll {
 
 .msc-upsell-cart-button {
 	position: relative;
-	display: inline-grid;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	width: 42px;
 	min-width: 42px;
 	height: 38px;
-	place-items: center;
+	padding: 0;
 	border: 0;
 	border-radius: 8px;
-	background: var(--msc-blue);
+	background: var(--msc-blue) !important;
+	background-image: none !important;
 	color: #ffffff !important;
 	cursor: pointer;
 	font: inherit;
 	font-size: 15px;
+	line-height: 1;
 	text-decoration: none;
-	box-shadow: 0 8px 18px rgba(4, 15, 124, 0.18);
-	transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+	overflow: hidden;
+	box-shadow: 0 8px 18px rgba(0, 5, 58, 0.18);
+	transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
 }
 
 .msc-upsell-cart-button:hover,
 .msc-upsell-cart-button:focus-visible {
-	background: var(--msc-gold);
+	background: var(--msc-gold) !important;
+	background-color: var(--msc-gold) !important;
+	background-image: none !important;
 	color: #ffffff !important;
 	outline: 0;
 	transform: translateY(-1px);
-	box-shadow: 0 10px 22px rgba(207, 181, 59, 0.28);
+	box-shadow: 0 10px 22px rgba(192, 168, 33, 0.28);
 }
 
 .msc-upsell-cart-button .msc-bag-icon {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	display: block;
+	flex: 0 0 18px;
 	width: 18px;
 	height: 18px;
+	margin: 0;
 	color: currentColor;
+	transform: translate(-50%, -50%);
 }
 
 .msc-add-cart-icon {
@@ -1383,15 +1444,15 @@ body.msc-lock-scroll {
 }
 
 .msc-button-secondary {
-	border: 1px solid rgba(4, 15, 124, 0.24);
+	border: 1px solid rgba(0, 5, 58, 0.24);
 	background: #ffffff;
 	color: var(--msc-blue);
 }
 
 .msc-button-secondary:hover,
 .msc-button-secondary:focus-visible {
-	border-color: rgba(207, 181, 59, 0.58);
-	background: rgba(207, 181, 59, 0.08);
+	border-color: rgba(192, 168, 33, 0.58);
+	background: rgba(192, 168, 33, 0.08);
 	color: var(--msc-gold);
 	outline: 0;
 }
@@ -1410,9 +1471,9 @@ body.msc-lock-scroll {
 	width: 68px;
 	height: 68px;
 	place-items: center;
-	border: 2px solid rgba(207, 181, 59, 0.5);
+	border: 2px solid rgba(192, 168, 33, 0.5);
 	border-radius: 50%;
-	background: rgba(4, 15, 124, 0.06);
+	background: rgba(0, 5, 58, 0.06);
 	color: var(--msc-blue);
 	font-size: 24px;
 	font-weight: 900;
@@ -1467,7 +1528,7 @@ body.msc-lock-scroll {
 .msc-action-loading::after {
 	width: 26px;
 	height: 26px;
-	border: 3px solid rgba(4, 15, 124, 0.16);
+	border: 3px solid rgba(0, 5, 58, 0.16);
 	border-top-color: var(--msc-gold);
 	border-radius: 50%;
 	animation: msc-spin 800ms linear infinite;
