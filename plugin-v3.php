@@ -142,6 +142,14 @@ if ( ! class_exists( 'Meu_Side_Cart_Plugin' ) ) {
 				true
 			);
 
+			wp_enqueue_script(
+				'portus-cart-for-woocommerce-feedback',
+				MEU_SIDE_CART_URL . 'assets/js/feedback.js',
+				array( 'portus-cart-for-woocommerce' ),
+				MEU_SIDE_CART_VERSION,
+				true
+			);
+
 			wp_localize_script(
 				'portus-cart-for-woocommerce',
 				'MeuSideCartData',
@@ -150,12 +158,15 @@ if ( ! class_exists( 'Meu_Side_Cart_Plugin' ) ) {
 					'nonce'         => wp_create_nonce( 'meu_side_cart_nonce' ),
 					'compatibility' => array(
 						'autoOpenOnAdd'          => class_exists( 'Meu_Side_Cart_Settings' ) && Meu_Side_Cart_Settings::is_enabled( 'auto_open_on_add' ),
+						'addAnimation'           => class_exists( 'Meu_Side_Cart_Settings' ) ? Meu_Side_Cart_Settings::get( 'add_animation_style' ) : 'pulse',
+						'showAddNotice'          => ! class_exists( 'Meu_Side_Cart_Settings' ) || Meu_Side_Cart_Settings::is_enabled( 'show_add_notice_when_closed' ),
 					),
 					'i18n'          => array(
 						'genericError'    => esc_html__( 'Não foi possível atualizar o carrinho. Tente novamente.', 'portus-cart-for-woocommerce' ),
 						'loading'         => esc_html__( 'Atualizando...', 'portus-cart-for-woocommerce' ),
 						'favoriteAdded'   => esc_html__( 'Produto adicionado aos favoritos.', 'portus-cart-for-woocommerce' ),
 						'favoriteRemoved' => esc_html__( 'Produto removido dos favoritos.', 'portus-cart-for-woocommerce' ),
+						'productAdded'    => esc_html__( 'Produto adicionado ao carrinho.', 'portus-cart-for-woocommerce' ),
 					),
 				)
 			);

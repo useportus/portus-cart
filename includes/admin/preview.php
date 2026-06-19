@@ -39,8 +39,27 @@ defined( 'ABSPATH' ) || exit;
 		data-preview-setting-floating-counter-position="<?php echo esc_attr( $floating_counter_position ); ?>"
 		data-preview-setting-show-floating-desktop="<?php echo esc_attr( $floating_desktop_visible ? 'yes' : 'no' ); ?>"
 		data-preview-setting-show-floating-mobile="<?php echo esc_attr( $floating_mobile_visible ? 'yes' : 'no' ); ?>"
+		data-preview-setting-enabled-header-trigger="<?php echo esc_attr( $header_trigger_enabled ? 'yes' : 'no' ); ?>"
+		data-preview-setting-header-trigger-label="<?php echo esc_attr( $settings['header_trigger_label'] ); ?>"
+		data-preview-setting-header-trigger-display="<?php echo esc_attr( $header_trigger_display ); ?>"
+		data-preview-setting-header-trigger-icon="<?php echo esc_attr( $header_trigger_icon ); ?>"
+		data-preview-setting-header-trigger-style="<?php echo esc_attr( $header_trigger_style ); ?>"
+		data-preview-setting-header-trigger-icon-size="<?php echo esc_attr( $header_trigger_icon_size ); ?>"
+		data-preview-setting-header-trigger-show-counter="<?php echo esc_attr( $header_trigger_show_counter ? 'yes' : 'no' ); ?>"
+		data-preview-setting-show-header-trigger-desktop="<?php echo esc_attr( $header_trigger_desktop_visible ? 'yes' : 'no' ); ?>"
+		data-preview-setting-show-header-trigger-mobile="<?php echo esc_attr( $header_trigger_mobile_visible ? 'yes' : 'no' ); ?>"
 		style="<?php echo esc_attr( $preview_style ); ?>"
 	>
+		<div class="portus-cart-for-woocommerce-preview__site-header">
+			<strong><?php esc_html_e( 'Sua loja', 'portus-cart-for-woocommerce' ); ?></strong>
+			<button class="portus-cart-for-woocommerce-preview__header-trigger portus-cart-for-woocommerce-preview__header-trigger--<?php echo esc_attr( sanitize_html_class( $header_trigger_style ) ); ?>" data-preview-header-trigger type="button" disabled <?php echo $header_trigger_enabled && $header_trigger_desktop_visible ? '' : 'hidden'; ?>>
+				<span class="portus-cart-for-woocommerce-preview__header-trigger-icon" data-preview-header-icon-wrap <?php echo 'text' === $header_trigger_display ? 'hidden' : ''; ?>>
+					<i class="portus-cart-for-woocommerce-preview__floating-icon portus-cart-for-woocommerce-preview__floating-icon--<?php echo esc_attr( sanitize_html_class( $header_trigger_icon ) ); ?>" data-preview-header-icon aria-hidden="true"></i>
+				</span>
+				<span data-preview-header-label <?php echo 'icon' === $header_trigger_display ? 'hidden' : ''; ?>><?php echo esc_html( $settings['header_trigger_label'] ); ?></span>
+				<span class="portus-cart-for-woocommerce-preview__header-trigger-count" data-preview-header-count <?php echo $header_trigger_show_counter ? '' : 'hidden'; ?>><?php echo esc_html( $preview_count ); ?></span>
+			</button>
+		</div>
 		<div class="portus-cart-for-woocommerce-preview__overlay" aria-hidden="true"></div>
 		<div class="portus-cart-for-woocommerce-preview__panel">
 			<header class="portus-cart-for-woocommerce-preview__header">

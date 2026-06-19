@@ -144,6 +144,27 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				'floating_counter_position'    => 'center',
 				'show_floating_desktop'        => 'yes',
 				'show_floating_mobile'         => 'yes',
+				'enabled_header_trigger'        => 'no',
+				'auto_insert_menu_trigger'      => 'no',
+				'header_menu_location'          => '',
+				'header_menu_position'          => 'end',
+				'header_trigger_label'          => __( 'Carrinho', 'portus-cart-for-woocommerce' ),
+				'header_trigger_display'        => 'icon-text',
+				'header_trigger_icon'           => 'bag-fill',
+				'header_trigger_style'          => 'minimal',
+				'header_trigger_icon_size'      => 22,
+				'header_trigger_show_counter'   => 'yes',
+				'header_trigger_custom_colors'  => 'no',
+				'header_trigger_color'          => '#00053A',
+				'header_trigger_background_color' => '#FFFFFF',
+				'header_trigger_hover_color'    => '#C0A821',
+				'header_trigger_counter_background' => '#C0A821',
+				'header_trigger_counter_color'  => '#FFFFFF',
+				'show_header_trigger_desktop'   => 'yes',
+				'show_header_trigger_mobile'    => 'yes',
+				'visual_preset'                 => 'classic',
+				'add_animation_style'           => 'pulse',
+				'show_add_notice_when_closed'   => 'yes',
 				'cart_z_index'                 => 999999,
 				'panel_width'                  => 440,
 				'floating_side'                => 'right',
@@ -183,6 +204,16 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 		 */
 		public static function get_settings() {
 			$settings = get_option( self::OPTION_NAME, array() );
+
+			if ( ( ! is_array( $settings ) || empty( $settings ) ) && defined( 'MEU_SIDE_CART_EDITION' ) && 'pro' === MEU_SIDE_CART_EDITION ) {
+				$free_option_name = 'meu_' . 'side_cart_settings';
+				$free_settings    = get_option( $free_option_name, array() );
+
+				if ( is_array( $free_settings ) && ! empty( $free_settings ) ) {
+					$settings = $free_settings;
+					update_option( self::OPTION_NAME, $settings );
+				}
+			}
 
 			if ( ! is_array( $settings ) ) {
 				$settings = array();
@@ -458,7 +489,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 						<?php settings_fields( 'meu_side_cart_settings_group' ); ?>
 						<input type="hidden" name="meu_side_cart_active_tab" value="<?php echo esc_attr( $active_tab ); ?>" />
 
-						<div class="portus-cart-for-woocommerce-admin__grid">
+						<div class="portus-cart-for-woocommerce-admin__grid portus-cart-for-woocommerce-admin__grid-<?php echo esc_attr( sanitize_html_class( $active_tab ) ); ?>">
 							<?php self::render_active_tab_panel( $active_tab, $settings ); ?>
 						</div>
 
@@ -501,6 +532,9 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 		 * @param array $settings Current settings.
 		 */
 		private static function render_admin_overview( $settings ) {
+			$floating_enabled = self::is_enabled( 'enabled_floating_button' );
+			$header_enabled   = self::is_enabled( 'enabled_header_trigger' );
+			$trigger_status   = $floating_enabled && $header_enabled ? __( 'Flutuante + cabeçalho', 'portus-cart-for-woocommerce' ) : ( $header_enabled ? __( 'Cabeçalho', 'portus-cart-for-woocommerce' ) : ( $floating_enabled ? __( 'Flutuante', 'portus-cart-for-woocommerce' ) : __( 'Desativados', 'portus-cart-for-woocommerce' ) ) );
 			?>
 			<section class="portus-cart-for-woocommerce-admin__overview" aria-label="<?php esc_attr_e( 'Resumo do Portus Cart', 'portus-cart-for-woocommerce' ); ?>">
 				<div>
@@ -509,9 +543,9 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 					<small><?php esc_html_e( 'Instalada neste site', 'portus-cart-for-woocommerce' ); ?></small>
 				</div>
 				<div>
-					<span><?php esc_html_e( 'Botão flutuante', 'portus-cart-for-woocommerce' ); ?></span>
-					<strong><?php echo esc_html( self::is_enabled( 'enabled_floating_button' ) ? __( 'Ativo', 'portus-cart-for-woocommerce' ) : __( 'Desativado', 'portus-cart-for-woocommerce' ) ); ?></strong>
-					<small><?php esc_html_e( 'Controle rápido para abrir o carrinho em qualquer página', 'portus-cart-for-woocommerce' ); ?></small>
+					<span><?php esc_html_e( 'Gatilhos', 'portus-cart-for-woocommerce' ); ?></span>
+					<strong><?php echo esc_html( $trigger_status ); ?></strong>
+					<small><?php esc_html_e( 'Use o flutuante, o cabeçalho ou os dois', 'portus-cart-for-woocommerce' ); ?></small>
 				</div>
 				<div>
 					<span><?php esc_html_e( 'Tema', 'portus-cart-for-woocommerce' ); ?></span>
@@ -529,8 +563,8 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 		 */
 		private static function get_tab_fields() {
 			return array(
-				'general'    => array( 'cart_title', 'enabled_floating_button', 'hide_floating_on_product', 'floating_bottom_offset' ),
-				'appearance' => array( 'primary_color', 'accent_color', 'floating_icon', 'floating_button_size', 'floating_icon_size', 'floating_shape', 'floating_background_color', 'floating_icon_color_mode', 'floating_icon_color', 'floating_counter_background_enabled', 'floating_counter_background', 'floating_counter_text_color', 'floating_counter_position', 'show_floating_desktop', 'show_floating_mobile' ),
+				'general'    => array( 'cart_title', 'enabled_floating_button', 'hide_floating_on_product', 'floating_bottom_offset', 'enabled_header_trigger', 'auto_insert_menu_trigger', 'header_menu_location', 'header_menu_position', 'add_animation_style', 'show_add_notice_when_closed' ),
+				'appearance' => array( 'visual_preset', 'primary_color', 'accent_color', 'floating_icon', 'floating_button_size', 'floating_icon_size', 'floating_shape', 'floating_background_color', 'floating_icon_color_mode', 'floating_icon_color', 'floating_counter_background_enabled', 'floating_counter_background', 'floating_counter_text_color', 'floating_counter_position', 'show_floating_desktop', 'show_floating_mobile', 'header_trigger_label', 'header_trigger_display', 'header_trigger_icon', 'header_trigger_style', 'header_trigger_icon_size', 'header_trigger_show_counter', 'header_trigger_custom_colors', 'header_trigger_color', 'header_trigger_background_color', 'header_trigger_hover_color', 'header_trigger_counter_background', 'header_trigger_counter_color', 'show_header_trigger_desktop', 'show_header_trigger_mobile' ),
 				'buttons'    => array( 'checkout_button_text', 'show_cart_button', 'cart_button_text', 'empty_button_text', 'empty_button_url' ),
 				'stock'      => array( 'show_low_stock_alerts', 'low_stock_threshold' ),
 				'advanced'   => array( 'delete_settings_on_uninstall' ),
@@ -553,6 +587,13 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				'floating_counter_background_enabled',
 				'show_floating_desktop',
 				'show_floating_mobile',
+				'enabled_header_trigger',
+				'auto_insert_menu_trigger',
+				'header_trigger_show_counter',
+				'header_trigger_custom_colors',
+				'show_header_trigger_desktop',
+				'show_header_trigger_mobile',
+				'show_add_notice_when_closed',
 				'auto_open_on_add',
 				'show_cart_button',
 				'show_low_stock_alerts',
@@ -650,6 +691,12 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 		 * @param array $settings Current settings.
 		 */
 		private static function render_general_tab( $settings ) {
+			$registered_locations = get_registered_nav_menus();
+			$menu_locations       = array( '' => __( 'Selecione um local de menu', 'portus-cart-for-woocommerce' ) );
+
+			foreach ( $registered_locations as $location_key => $location_label ) {
+				$menu_locations[ sanitize_key( $location_key ) ] = $location_label;
+			}
 			?>
 			<section class="portus-cart-for-woocommerce-admin__card">
 				<h2><?php esc_html_e( 'Experiência do carrinho', 'portus-cart-for-woocommerce' ); ?></h2>
@@ -661,6 +708,50 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				?>
 				<p class="description"><?php esc_html_e( 'Por padrão, o botão flutuante não aparece no carrinho, checkout e página de pedido recebido para evitar distrações na finalização da compra.', 'portus-cart-for-woocommerce' ); ?></p>
 			</section>
+
+			<section class="portus-cart-for-woocommerce-admin__card">
+				<h2><?php esc_html_e( 'Menu e cabeçalho', 'portus-cart-for-woocommerce' ); ?></h2>
+				<p class="description"><?php esc_html_e( 'Use o botão flutuante, o cabeçalho ou os dois. A opção fica desligada por padrão para não alterar menus existentes sem autorização.', 'portus-cart-for-woocommerce' ); ?></p>
+				<?php self::render_checkbox_input( 'enabled_header_trigger', __( 'Ativar botão no menu/cabeçalho', 'portus-cart-for-woocommerce' ), $settings['enabled_header_trigger'] ); ?>
+				<?php self::render_checkbox_input( 'auto_insert_menu_trigger', __( 'Inserir automaticamente em um menu clássico', 'portus-cart-for-woocommerce' ), $settings['auto_insert_menu_trigger'] ); ?>
+				<div class="portus-cart-for-woocommerce-admin__field-grid">
+					<?php
+					self::render_select_input( 'header_menu_location', __( 'Local do menu', 'portus-cart-for-woocommerce' ), $settings['header_menu_location'], $menu_locations );
+					self::render_select_input(
+						'header_menu_position',
+						__( 'Posição no menu', 'portus-cart-for-woocommerce' ),
+						$settings['header_menu_position'],
+						array(
+							'end'   => __( 'Final do menu (recomendado)', 'portus-cart-for-woocommerce' ),
+							'start' => __( 'Início do menu', 'portus-cart-for-woocommerce' ),
+						)
+					);
+					?>
+				</div>
+				<div class="portus-cart-for-woocommerce-admin__shortcode">
+					<strong><?php esc_html_e( 'Elementor, Divi e outros construtores', 'portus-cart-for-woocommerce' ); ?></strong>
+					<code>[portus_cart_button]</code>
+					<p><?php esc_html_e( 'No editor de blocos, procure pelo bloco Portus Cart. O shortcode e o bloco usam a mesma personalização abaixo.', 'portus-cart-for-woocommerce' ); ?></p>
+				</div>
+			</section>
+
+			<section class="portus-cart-for-woocommerce-admin__card">
+				<h2><?php esc_html_e( 'Feedback ao adicionar produto', 'portus-cart-for-woocommerce' ); ?></h2>
+				<?php
+				self::render_select_input(
+					'add_animation_style',
+					__( 'Animação do botão', 'portus-cart-for-woocommerce' ),
+					$settings['add_animation_style'],
+					array(
+						'pulse'  => __( 'Pulso discreto', 'portus-cart-for-woocommerce' ),
+						'bounce' => __( 'Salto suave', 'portus-cart-for-woocommerce' ),
+						'none'   => __( 'Sem animação', 'portus-cart-for-woocommerce' ),
+					)
+				);
+				self::render_checkbox_input( 'show_add_notice_when_closed', __( 'Mostrar aviso “Produto adicionado” quando o carrinho não abrir automaticamente', 'portus-cart-for-woocommerce' ), $settings['show_add_notice_when_closed'] );
+				?>
+				<p class="description"><?php esc_html_e( 'As animações respeitam a preferência de movimento reduzido configurada no dispositivo do visitante.', 'portus-cart-for-woocommerce' ); ?></p>
+			</section>
 			<?php
 		}
 
@@ -671,6 +762,29 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 		 */
 		private static function render_appearance_tab( $settings ) {
 			?>
+			<section class="portus-cart-for-woocommerce-admin__card portus-cart-for-woocommerce-admin__preset-card">
+				<h2><?php esc_html_e( 'Estilos prontos', 'portus-cart-for-woocommerce' ); ?></h2>
+				<p class="description"><?php esc_html_e( 'Escolha um ponto de partida. O preset preenche os campos e você continua livre para personalizar tudo.', 'portus-cart-for-woocommerce' ); ?></p>
+				<input type="hidden" name="<?php echo esc_attr( self::OPTION_NAME . '[visual_preset]' ); ?>" value="<?php echo esc_attr( $settings['visual_preset'] ); ?>" data-aurea-preset-value />
+				<div class="portus-cart-for-woocommerce-admin__presets" data-aurea-presets>
+					<?php
+					$presets = array(
+						'classic'  => array( __( 'Clássico', 'portus-cart-for-woocommerce' ), __( 'Mantém a aparência atual.', 'portus-cart-for-woocommerce' ) ),
+						'minimal'  => array( __( 'Minimalista', 'portus-cart-for-woocommerce' ), __( 'Leve, neutro e discreto.', 'portus-cart-for-woocommerce' ) ),
+						'portus'   => array( __( 'Portus', 'portus-cart-for-woocommerce' ), __( 'Azul e dourado com presença premium.', 'portus-cart-for-woocommerce' ) ),
+						'contrast' => array( __( 'Destaque', 'portus-cart-for-woocommerce' ), __( 'Contraste forte para lojas promocionais.', 'portus-cart-for-woocommerce' ) ),
+					);
+					foreach ( $presets as $preset_key => $preset_data ) :
+						?>
+						<button type="button" class="portus-cart-for-woocommerce-admin__preset<?php echo $settings['visual_preset'] === $preset_key ? ' is-active' : ''; ?>" data-aurea-preset="<?php echo esc_attr( $preset_key ); ?>">
+							<i aria-hidden="true"></i>
+							<strong><?php echo esc_html( $preset_data[0] ); ?></strong>
+							<span><?php echo esc_html( $preset_data[1] ); ?></span>
+						</button>
+					<?php endforeach; ?>
+				</div>
+			</section>
+
 			<section class="portus-cart-for-woocommerce-admin__card">
 				<h2><?php esc_html_e( 'Identidade visual', 'portus-cart-for-woocommerce' ); ?></h2>
 				<div class="portus-cart-for-woocommerce-admin__colors">
@@ -741,6 +855,58 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 					<?php self::render_checkbox_input( 'show_floating_mobile', __( 'Mostrar em celulares e tablets', 'portus-cart-for-woocommerce' ), $settings['show_floating_mobile'] ); ?>
 				</div>
 				<p class="description"><?php esc_html_e( 'Lado e distância inferior continuam disponíveis nas abas Carrinho e Compatibilidade.', 'portus-cart-for-woocommerce' ); ?></p>
+			</section>
+
+			<section class="portus-cart-for-woocommerce-admin__card">
+				<h2><?php esc_html_e( 'Botão do menu/cabeçalho', 'portus-cart-for-woocommerce' ); ?></h2>
+				<p class="description"><?php esc_html_e( 'Essa aparência é usada na inserção automática, no shortcode e no bloco Portus Cart.', 'portus-cart-for-woocommerce' ); ?></p>
+
+				<?php self::render_floating_icon_picker( $settings['header_trigger_icon'], 'header_trigger_icon', __( 'Ícone do menu/cabeçalho', 'portus-cart-for-woocommerce' ) ); ?>
+
+				<div class="portus-cart-for-woocommerce-admin__field-grid">
+					<?php
+					self::render_text_input( 'header_trigger_label', __( 'Texto do botão', 'portus-cart-for-woocommerce' ), $settings['header_trigger_label'] );
+					self::render_select_input(
+						'header_trigger_display',
+						__( 'Conteúdo exibido', 'portus-cart-for-woocommerce' ),
+						$settings['header_trigger_display'],
+						array(
+							'icon-text' => __( 'Ícone e texto', 'portus-cart-for-woocommerce' ),
+							'icon'      => __( 'Somente ícone', 'portus-cart-for-woocommerce' ),
+							'text'      => __( 'Somente texto', 'portus-cart-for-woocommerce' ),
+						)
+					);
+					self::render_select_input(
+						'header_trigger_style',
+						__( 'Estilo do botão', 'portus-cart-for-woocommerce' ),
+						$settings['header_trigger_style'],
+						array(
+							'minimal' => __( 'Minimalista', 'portus-cart-for-woocommerce' ),
+							'outline' => __( 'Contorno', 'portus-cart-for-woocommerce' ),
+							'filled'  => __( 'Preenchido', 'portus-cart-for-woocommerce' ),
+						)
+					);
+					self::render_range_input( 'header_trigger_icon_size', __( 'Tamanho do ícone', 'portus-cart-for-woocommerce' ), $settings['header_trigger_icon_size'], 16, 36, 1, 'px' );
+					?>
+				</div>
+
+				<?php self::render_checkbox_input( 'header_trigger_show_counter', __( 'Mostrar quantidade de itens', 'portus-cart-for-woocommerce' ), $settings['header_trigger_show_counter'] ); ?>
+				<?php self::render_checkbox_input( 'header_trigger_custom_colors', __( 'Usar cores próprias no menu/cabeçalho', 'portus-cart-for-woocommerce' ), $settings['header_trigger_custom_colors'] ); ?>
+
+				<div class="portus-cart-for-woocommerce-admin__colors">
+					<?php
+					self::render_color_input( 'header_trigger_color', __( 'Ícone e texto', 'portus-cart-for-woocommerce' ), $settings['header_trigger_color'] );
+					self::render_color_input( 'header_trigger_background_color', __( 'Fundo preenchido', 'portus-cart-for-woocommerce' ), $settings['header_trigger_background_color'] );
+					self::render_color_input( 'header_trigger_hover_color', __( 'Cor ao passar o mouse', 'portus-cart-for-woocommerce' ), $settings['header_trigger_hover_color'] );
+					self::render_color_input( 'header_trigger_counter_background', __( 'Fundo do contador', 'portus-cart-for-woocommerce' ), $settings['header_trigger_counter_background'] );
+					self::render_color_input( 'header_trigger_counter_color', __( 'Número do contador', 'portus-cart-for-woocommerce' ), $settings['header_trigger_counter_color'] );
+					?>
+				</div>
+
+				<div class="portus-cart-for-woocommerce-admin__visibility-options">
+					<?php self::render_checkbox_input( 'show_header_trigger_desktop', __( 'Mostrar em computadores', 'portus-cart-for-woocommerce' ), $settings['show_header_trigger_desktop'] ); ?>
+					<?php self::render_checkbox_input( 'show_header_trigger_mobile', __( 'Mostrar em celulares e tablets', 'portus-cart-for-woocommerce' ), $settings['show_header_trigger_mobile'] ); ?>
+				</div>
 			</section>
 			<?php
 		}
@@ -1158,6 +1324,8 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				'plugin-v3.php',
 				'assets/css/style.css',
 				'assets/js/script.js',
+				'assets/js/feedback.js',
+				'assets/js/block.js',
 				'includes/cart.php',
 				'includes/ajax.php',
 				'includes/coupon.php',
@@ -1304,8 +1472,21 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 			$floating_counter_filled = 'yes' === $settings['floating_counter_background_enabled'];
 			$floating_desktop_visible = 'yes' === $settings['show_floating_desktop'];
 			$floating_mobile_visible = 'yes' === $settings['show_floating_mobile'];
+			$header_trigger_enabled = 'yes' === $settings['enabled_header_trigger'];
+			$header_trigger_icon = self::sanitize_value_by_key( 'header_trigger_icon', $settings['header_trigger_icon'] );
+			$header_trigger_display = self::sanitize_value_by_key( 'header_trigger_display', $settings['header_trigger_display'] );
+			$header_trigger_style = self::sanitize_value_by_key( 'header_trigger_style', $settings['header_trigger_style'] );
+			$header_trigger_icon_size = self::sanitize_value_by_key( 'header_trigger_icon_size', $settings['header_trigger_icon_size'] );
+			$header_trigger_custom_colors = 'yes' === $settings['header_trigger_custom_colors'];
+			$header_trigger_color = $header_trigger_custom_colors ? self::sanitize_value_by_key( 'header_trigger_color', $settings['header_trigger_color'] ) : $primary;
+			$header_trigger_background = $header_trigger_custom_colors ? self::sanitize_value_by_key( 'header_trigger_background_color', $settings['header_trigger_background_color'] ) : '#FFFFFF';
+			$header_trigger_counter_background = $header_trigger_custom_colors ? self::sanitize_value_by_key( 'header_trigger_counter_background', $settings['header_trigger_counter_background'] ) : $accent;
+			$header_trigger_counter_color = $header_trigger_custom_colors ? self::sanitize_value_by_key( 'header_trigger_counter_color', $settings['header_trigger_counter_color'] ) : '#FFFFFF';
+			$header_trigger_show_counter = 'yes' === $settings['header_trigger_show_counter'];
+			$header_trigger_desktop_visible = 'yes' === $settings['show_header_trigger_desktop'];
+			$header_trigger_mobile_visible = 'yes' === $settings['show_header_trigger_mobile'];
 			$preview_style       = sprintf(
-				'--aurea-preview-primary:%1$s;--aurea-preview-accent:%2$s;--aurea-preview-floating-button-size:%3$dpx;--aurea-preview-floating-icon-size:%4$dpx;--aurea-preview-floating-background-rgb:%5$s;--aurea-preview-floating-icon-color:%6$s;--aurea-preview-floating-counter-background:%7$s;--aurea-preview-floating-counter-color:%8$s;',
+				'--aurea-preview-primary:%1$s;--aurea-preview-accent:%2$s;--aurea-preview-floating-button-size:%3$dpx;--aurea-preview-floating-icon-size:%4$dpx;--aurea-preview-floating-background-rgb:%5$s;--aurea-preview-floating-icon-color:%6$s;--aurea-preview-floating-counter-background:%7$s;--aurea-preview-floating-counter-color:%8$s;--aurea-preview-header-color:%9$s;--aurea-preview-header-background:%10$s;--aurea-preview-header-counter-background:%11$s;--aurea-preview-header-counter-color:%12$s;--aurea-preview-header-icon-size:%13$dpx;',
 				$primary,
 				$accent,
 				$floating_button_size,
@@ -1313,7 +1494,12 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				implode( ',', $floating_background_rgb ),
 				$floating_icon_color,
 				$floating_counter_background,
-				$floating_counter_color
+				$floating_counter_color,
+				$header_trigger_color,
+				$header_trigger_background,
+				$header_trigger_counter_background,
+				$header_trigger_counter_color,
+				$header_trigger_icon_size
 			);
 			$checkout_text       = isset( $settings['checkout_button_text'] ) ? $settings['checkout_button_text'] : __( 'Finalizar compra', 'portus-cart-for-woocommerce' );
 			$cart_button_text    = isset( $settings['cart_button_text'] ) ? $settings['cart_button_text'] : __( 'Ver carrinho', 'portus-cart-for-woocommerce' );
@@ -1458,6 +1644,24 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 
 
 
+		/**
+		 * Translates known legacy messages returned by older license endpoints.
+		 *
+		 * @param string $message License server message.
+		 * @return string
+		 */
+		private static function get_license_message_text( $message ) {
+			$message = is_scalar( $message ) ? sanitize_text_field( (string) $message ) : '';
+			$legacy_messages = array(
+				'License active for this domain.'                                  => __( 'Licença ativa para este domínio.', 'portus-cart-for-woocommerce' ),
+				'License invalid, expired or not authorized for this domain.'      => __( 'Licença inválida, expirada ou não autorizada para este domínio.', 'portus-cart-for-woocommerce' ),
+				'License deactivated on this domain.'                              => __( 'Licença desativada neste domínio.', 'portus-cart-for-woocommerce' ),
+				'License key is required.'                                         => __( 'Informe uma chave de licença.', 'portus-cart-for-woocommerce' ),
+			);
+
+			return isset( $legacy_messages[ $message ] ) ? $legacy_messages[ $message ] : $message;
+		}
+
 
 
 
@@ -1539,6 +1743,14 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				return max( 16, min( 40, absint( $value ) ) );
 			}
 
+			if ( 'header_trigger_icon_size' === $key ) {
+				if ( ! is_scalar( $value ) ) {
+					return $defaults[ $key ];
+				}
+
+				return max( 16, min( 36, absint( $value ) ) );
+			}
+
 			if ( 'cart_z_index' === $key ) {
 				if ( ! is_scalar( $value ) ) {
 					return $defaults[ $key ];
@@ -1569,7 +1781,17 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				return in_array( $side, array( 'left', 'right' ), true ) ? $side : $defaults[ $key ];
 			}
 
-			if ( 'floating_icon' === $key ) {
+			if ( 'header_menu_location' === $key ) {
+				return is_scalar( $value ) ? sanitize_key( $value ) : '';
+			}
+
+			if ( 'header_menu_position' === $key ) {
+				$position = is_scalar( $value ) ? sanitize_key( $value ) : $defaults[ $key ];
+
+				return in_array( $position, array( 'start', 'end' ), true ) ? $position : $defaults[ $key ];
+			}
+
+			if ( in_array( $key, array( 'floating_icon', 'header_trigger_icon' ), true ) ) {
 				$icon  = is_scalar( $value ) ? sanitize_key( $value ) : $defaults[ $key ];
 				$valid = array_keys( self::get_floating_icon_options() );
 
@@ -1594,6 +1816,30 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				return in_array( $position, array( 'center', 'top-right', 'top-left' ), true ) ? $position : $defaults[ $key ];
 			}
 
+			if ( 'header_trigger_display' === $key ) {
+				$display = is_scalar( $value ) ? sanitize_key( $value ) : $defaults[ $key ];
+
+				return in_array( $display, array( 'icon', 'icon-text', 'text' ), true ) ? $display : $defaults[ $key ];
+			}
+
+			if ( 'header_trigger_style' === $key ) {
+				$style = is_scalar( $value ) ? sanitize_key( $value ) : $defaults[ $key ];
+
+				return in_array( $style, array( 'minimal', 'outline', 'filled' ), true ) ? $style : $defaults[ $key ];
+			}
+
+			if ( 'visual_preset' === $key ) {
+				$preset = is_scalar( $value ) ? sanitize_key( $value ) : $defaults[ $key ];
+
+				return in_array( $preset, array( 'classic', 'minimal', 'portus', 'contrast', 'custom' ), true ) ? $preset : $defaults[ $key ];
+			}
+
+			if ( 'add_animation_style' === $key ) {
+				$animation = is_scalar( $value ) ? sanitize_key( $value ) : $defaults[ $key ];
+
+				return in_array( $animation, array( 'none', 'pulse', 'bounce' ), true ) ? $animation : $defaults[ $key ];
+			}
+
 			if ( 'low_stock_threshold' === $key ) {
 				if ( ! is_scalar( $value ) ) {
 					return $defaults[ $key ];
@@ -1603,7 +1849,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 			}
 
 
-			if ( in_array( $key, array( 'primary_color', 'accent_color', 'floating_background_color', 'floating_icon_color', 'floating_counter_background', 'floating_counter_text_color' ), true ) ) {
+			if ( in_array( $key, array( 'primary_color', 'accent_color', 'floating_background_color', 'floating_icon_color', 'floating_counter_background', 'floating_counter_text_color', 'header_trigger_color', 'header_trigger_background_color', 'header_trigger_hover_color', 'header_trigger_counter_background', 'header_trigger_counter_color' ), true ) ) {
 				if ( ! is_scalar( $value ) ) {
 					return $defaults[ $key ];
 				}
@@ -1716,19 +1962,23 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 		/**
 		 * Renders the allow-listed local SVG selector for the floating button.
 		 *
-		 * @param string $value Current icon key.
+		 * @param string $value  Current icon key.
+		 * @param string $key    Setting key.
+		 * @param string $legend Field legend.
 		 */
-		private static function render_floating_icon_picker( $value ) {
+		private static function render_floating_icon_picker( $value, $key = 'floating_icon', $legend = '' ) {
 			$options = self::get_floating_icon_options();
 			$value   = is_scalar( $value ) ? sanitize_key( (string) $value ) : 'bag-fill';
 			$value   = array_key_exists( $value, $options ) ? $value : 'bag-fill';
+			$key     = in_array( $key, array( 'floating_icon', 'header_trigger_icon' ), true ) ? $key : 'floating_icon';
+			$legend  = '' !== $legend ? $legend : __( 'Ícone do botão', 'portus-cart-for-woocommerce' );
 			?>
 			<fieldset class="portus-cart-for-woocommerce-admin__icon-picker">
-				<legend><?php esc_html_e( 'Ícone do botão', 'portus-cart-for-woocommerce' ); ?></legend>
+				<legend><?php echo esc_html( $legend ); ?></legend>
 				<div>
 					<?php foreach ( $options as $icon_key => $icon_label ) : ?>
 						<label>
-							<input type="radio" name="<?php echo esc_attr( self::OPTION_NAME . '[floating_icon]' ); ?>" value="<?php echo esc_attr( $icon_key ); ?>" <?php checked( $value, $icon_key ); ?> />
+							<input type="radio" name="<?php echo esc_attr( self::OPTION_NAME . '[' . $key . ']' ); ?>" value="<?php echo esc_attr( $icon_key ); ?>" <?php checked( $value, $icon_key ); ?> />
 							<span class="portus-cart-for-woocommerce-admin__icon-choice" aria-hidden="true">
 								<i class="portus-cart-for-woocommerce-admin__floating-icon portus-cart-for-woocommerce-admin__floating-icon--<?php echo esc_attr( sanitize_html_class( $icon_key ) ); ?>"></i>
 							</span>

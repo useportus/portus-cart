@@ -5,11 +5,11 @@ Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 3.4.0
+Stable tag: 3.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Responsive AJAX side cart for WooCommerce with coupons, item removal, quantity controls and a floating cart button.
+Responsive AJAX side cart for WooCommerce with menu/header and floating cart triggers, presets, coupons and quantity controls.
 
 == Description ==
 
@@ -19,6 +19,9 @@ The plugin focuses on the essential cart workflow:
 
 * Responsive side cart panel.
 * Customizable floating cart button with four local SVG icons, sizes, shapes, colors, counter positions and responsive visibility.
+* Optional menu/header trigger with automatic classic menu placement, shortcode and Gutenberg block.
+* Four ready-to-use visual presets with independent header trigger styling.
+* Accessible add-to-cart animation and notification.
 * Automatic opening after WooCommerce AJAX add to cart.
 * Quantity updates without reloading the page.
 * Apply and remove WooCommerce coupons without reloading the page.
@@ -53,6 +56,8 @@ After activation, open the Portus Cart settings page to adjust:
 
 * Cart title.
 * Floating cart button icon, size, shape, colors, counter, responsive visibility and spacing.
+* Menu/header trigger location, label, icon, style, colors, counter and responsive visibility.
+* Visual presets for fast setup.
 * Primary and accent colors.
 * Checkout, cart and empty cart button labels.
 * Optional custom URL for the empty cart button.
@@ -93,6 +98,10 @@ No. The checkout button sends customers to the standard WooCommerce checkout pag
 
 Yes. The plugin includes admin settings for the cart title, primary color, accent color, checkout button label and floating button behavior.
 
+= Can I place the cart button in my header builder? =
+
+Yes. Enable the menu/header trigger and use the Portus Cart block or the `[portus_cart_button]` shortcode. Classic themes can also add it automatically to a selected menu location.
+
 = Will it work with cache plugins? =
 
 In most stores, yes. If a cache or optimization plugin delays WooCommerce cart fragments or AJAX scripts, exclude WooCommerce cart fragments and the Portus Cart JavaScript from aggressive delay rules.
@@ -116,13 +125,14 @@ Cart content, quantities and totals are handled by WooCommerce. Store owners sho
 
 == Changelog ==
 
-= 3.4.0 =
-* Adds four local Bootstrap SVG icons and complete visual controls for the floating cart button.
-* Adds button and icon sizes, circular or rounded-square shape, colors and counter positioning.
-* Adds independent desktop and mobile visibility with a live device preview.
-* Preserves the previous floating button appearance as the default after upgrading.
+= 3.5.1 =
+* Adds an optional menu/header cart trigger with automatic placement, shortcode and Gutenberg block.
+* Adds independent icon, text, counter, style, colors and responsive visibility controls for the header trigger.
+* Adds Classic, Minimal, Portus and Highlight visual presets.
+* Adds accessible add-to-cart feedback animation and notification.
+* Keeps the menu/header trigger disabled by default to preserve existing layouts.
 
 == Upgrade Notice ==
 
-= 3.4.0 =
-Adds floating button personalization while preserving the previous appearance by default.
+= 3.5.1 =
+Adds optional menu/header triggers, visual presets and accessible add-to-cart feedback without changing existing layouts by default.

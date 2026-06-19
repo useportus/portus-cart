@@ -234,6 +234,179 @@ body.msc-lock-scroll .msc-floating-button {
 	}
 }
 
+.msc-header-trigger {
+	position: relative;
+	display: inline-flex !important;
+	min-width: 0;
+	min-height: 38px;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	box-sizing: border-box;
+	border: 1px solid transparent !important;
+	border-radius: 10px;
+	padding: 7px 10px !important;
+	margin: 0 !important;
+	background: transparent !important;
+	color: var(--msc-header-color, currentColor) !important;
+	box-shadow: none !important;
+	cursor: pointer;
+	font: inherit !important;
+	font-size: inherit !important;
+	font-weight: 700 !important;
+	line-height: 1 !important;
+	text-decoration: none !important;
+	text-shadow: none !important;
+	vertical-align: middle;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.msc-header-trigger:hover,
+.msc-header-trigger:focus-visible {
+	border-color: var(--msc-header-hover, currentColor) !important;
+	color: var(--msc-header-hover, currentColor) !important;
+	outline: 2px solid transparent;
+	outline-offset: 2px;
+}
+
+.msc-header-trigger-outline {
+	border-color: var(--msc-header-color, currentColor) !important;
+}
+
+.msc-header-trigger-filled {
+	border-color: var(--msc-header-background, #ffffff) !important;
+	background: var(--msc-header-background, #ffffff) !important;
+}
+
+.msc-header-trigger-filled:hover,
+.msc-header-trigger-filled:focus-visible {
+	background: var(--msc-header-background, #ffffff) !important;
+}
+
+.msc-header-icon {
+	display: inline-grid;
+	width: var(--msc-header-icon-size, 22px);
+	height: var(--msc-header-icon-size, 22px);
+	flex: 0 0 auto;
+	place-items: center;
+	font-size: var(--msc-header-icon-size, 22px);
+	line-height: 1;
+}
+
+.msc-header-label {
+	min-width: 0;
+	white-space: nowrap;
+}
+
+.msc-header-count {
+	display: inline-grid;
+	min-width: 20px;
+	height: 20px;
+	place-items: center;
+	border-radius: 999px;
+	padding: 0 5px;
+	background: var(--msc-header-counter-background, var(--msc-gold));
+	color: var(--msc-header-counter-color, #ffffff);
+	font-size: 11px;
+	font-weight: 900;
+	line-height: 1;
+}
+
+@media (min-width: 783px) {
+	.msc-header-trigger.msc-header-trigger-hide-desktop {
+		display: none !important;
+	}
+}
+
+@media (max-width: 782px) {
+	.msc-header-trigger.msc-header-trigger-hide-mobile {
+		display: none !important;
+	}
+}
+
+.msc-add-toast {
+	position: fixed;
+	right: 50%;
+	bottom: max(24px, env(safe-area-inset-bottom));
+	z-index: var(--msc-floating-z-index, 2147482900);
+	display: flex;
+	max-width: min(420px, calc(100vw - 32px));
+	align-items: center;
+	gap: 10px;
+	transform: translate(50%, 18px);
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-radius: 12px;
+	padding: 12px 14px;
+	background: #111827;
+	color: #ffffff;
+	box-shadow: 0 18px 46px rgba(0, 0, 0, 0.24);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.msc-add-toast[hidden] {
+	display: none !important;
+}
+
+.msc-add-toast.msc-is-visible {
+	transform: translate(50%, 0);
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.msc-add-toast-icon {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	flex: 0 0 auto;
+	border-radius: 999px;
+	background: #34d399;
+	box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.18);
+}
+
+.msc-add-toast button {
+	border: 0 !important;
+	padding: 0 !important;
+	background: transparent !important;
+	color: #f5d85b !important;
+	cursor: pointer;
+	font: inherit !important;
+	font-weight: 800 !important;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.msc-trigger-feedback-pulse {
+	animation: msc-trigger-pulse 480ms ease-out;
+}
+
+.msc-trigger-feedback-bounce {
+	animation: msc-trigger-bounce 560ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes msc-trigger-pulse {
+	0%, 100% { transform: scale(1); }
+	45% { transform: scale(1.12); }
+}
+
+@keyframes msc-trigger-bounce {
+	0%, 100% { transform: translateY(0); }
+	35% { transform: translateY(-7px); }
+	65% { transform: translateY(2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.msc-trigger-feedback-pulse,
+	.msc-trigger-feedback-bounce {
+		animation: none !important;
+	}
+	.msc-add-toast {
+		transition: none;
+	}
+}
+
 .msc-overlay {
 	position: fixed;
 	inset: 0;

@@ -96,7 +96,7 @@
 		document.body.classList.toggle( 'msc-lock-scroll', value );
 		panel.setAttribute( 'aria-hidden', value ? 'false' : 'true' );
 
-		root.querySelectorAll( '[data-msc-open]' ).forEach( function ( button ) {
+		document.querySelectorAll( '[data-msc-open]' ).forEach( function ( button ) {
 			button.setAttribute( 'aria-expanded', value ? 'true' : 'false' );
 		} );
 

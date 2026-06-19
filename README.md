@@ -9,14 +9,18 @@ It helps customers review cart items, update quantities, apply coupons, remove p
 ## Features
 
 - Responsive side cart panel for WooCommerce.
-- Optional floating cart button with item counter.
+- Customizable floating cart button with four local icons, sizes, shapes, colors, counter positions, and responsive visibility.
+- Optional menu/header cart trigger with automatic classic-menu placement.
+- Shortcode `[portus_cart_button]` and a dynamic Gutenberg block for header builders and page content.
+- Four visual presets: Classic, Minimal, Portus, and Highlight.
+- Accessible add-to-cart animation and notification.
 - Automatic opening after WooCommerce AJAX add to cart.
 - Quantity updates without page reloads.
 - Coupon application and removal using WooCommerce settings.
 - AJAX item removal.
 - Checkout and cart page links.
 - Low stock alerts.
-- Admin settings for labels, colors, positioning, and compatibility.
+- Admin settings for labels, colors, positioning, triggers, and compatibility.
 - Scoped frontend styles to reduce theme conflicts.
 
 ## Requirements

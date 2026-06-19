@@ -17,6 +17,9 @@ if ( ! class_exists( 'Meu_Side_Cart_Cart' ) ) {
 		 */
 		public static function init() {
 			add_filter( 'woocommerce_add_to_cart_fragments', array( __CLASS__, 'add_fragments' ) );
+			add_filter( 'wp_nav_menu_items', array( __CLASS__, 'append_menu_trigger' ), 20, 2 );
+			add_shortcode( 'portus_cart_button', array( __CLASS__, 'render_trigger_shortcode' ) );
+			add_action( 'init', array( __CLASS__, 'register_trigger_block' ) );
 		}
 
 		/**
@@ -27,9 +30,187 @@ if ( ! class_exists( 'Meu_Side_Cart_Cart' ) ) {
 		 */
 		public static function add_fragments( $fragments ) {
 			$fragments['span.msc-floating-count'] = self::get_count_badge_html();
+			$fragments['span.msc-header-count']   = self::get_header_count_badge_html();
 			$fragments['div.msc-panel-content']  = '<div class="msc-panel-content" data-msc-content>' . self::get_panel_content_html() . '</div>';
 
 			return $fragments;
+		}
+
+		/**
+		 * Appends the optional cart trigger to one selected classic menu location.
+		 *
+		 * @param string   $items Existing menu items HTML.
+		 * @param stdClass $args  Menu rendering arguments.
+		 * @return string
+		 */
+		public static function append_menu_trigger( $items, $args ) {
+			if ( ! class_exists( 'Meu_Side_Cart_Settings' ) || ! Meu_Side_Cart_Settings::is_enabled( 'enabled_header_trigger' ) || ! Meu_Side_Cart_Settings::is_enabled( 'auto_insert_menu_trigger' ) ) {
+				return $items;
+			}
+
+			$selected_location = sanitize_key( (string) Meu_Side_Cart_Settings::get( 'header_menu_location' ) );
+			$current_location  = isset( $args->theme_location ) ? sanitize_key( (string) $args->theme_location ) : '';
+
+			if ( '' === $selected_location || $selected_location !== $current_location ) {
+				return $items;
+			}
+
+			$trigger = self::get_header_trigger_html( array(), 'menu' );
+
+			if ( '' === $trigger ) {
+				return $items;
+			}
+
+			$item = '<li class="menu-item msc-menu-item">' . $trigger . '</li>';
+
+			return 'start' === Meu_Side_Cart_Settings::get( 'header_menu_position' ) ? $item . $items : $items . $item;
+		}
+
+		/**
+		 * Renders the manual header trigger shortcode.
+		 *
+		 * @param array $attributes Shortcode attributes.
+		 * @return string
+		 */
+		public static function render_trigger_shortcode( $attributes = array() ) {
+			$attributes = shortcode_atts(
+				array(
+					'label'   => '',
+					'display' => '',
+					'icon'    => '',
+					'counter' => '',
+				),
+				is_array( $attributes ) ? $attributes : array(),
+				'portus_cart_button'
+			);
+
+			return self::get_header_trigger_html( $attributes, 'shortcode' );
+		}
+
+		/**
+		 * Registers a dynamic Gutenberg block for theme and template headers.
+		 */
+		public static function register_trigger_block() {
+			if ( ! function_exists( 'register_block_type' ) ) {
+				return;
+			}
+
+			wp_register_script(
+				'portus-cart-for-woocommerce-trigger-block',
+				MEU_SIDE_CART_URL . 'assets/js/block.js',
+				array( 'wp-blocks', 'wp-block-editor', 'wp-components', 'wp-element', 'wp-i18n' ),
+				MEU_SIDE_CART_VERSION,
+				true
+			);
+
+			register_block_type(
+				'portus/cart-trigger',
+				array(
+					'api_version'     => 2,
+					'editor_script'   => 'portus-cart-for-woocommerce-trigger-block',
+					'render_callback' => array( __CLASS__, 'render_trigger_block' ),
+					'attributes'      => array(
+						'label'   => array( 'type' => 'string', 'default' => '' ),
+						'display' => array( 'type' => 'string', 'default' => '' ),
+						'icon'    => array( 'type' => 'string', 'default' => '' ),
+						'counter' => array( 'type' => 'boolean' ),
+					),
+				)
+			);
+		}
+
+		/**
+		 * Renders the dynamic Gutenberg block.
+		 *
+		 * @param array $attributes Block attributes.
+		 * @return string
+		 */
+		public static function render_trigger_block( $attributes = array() ) {
+			if ( isset( $attributes['counter'] ) ) {
+				$attributes['counter'] = $attributes['counter'] ? 'yes' : 'no';
+			}
+
+			return self::get_header_trigger_html( is_array( $attributes ) ? $attributes : array(), 'block' );
+		}
+
+		/**
+		 * Returns one safe and theme-neutral menu/header trigger.
+		 *
+		 * @param array  $overrides Optional shortcode or block overrides.
+		 * @param string $context   Trigger placement context.
+		 * @return string
+		 */
+		private static function get_header_trigger_html( $overrides = array(), $context = 'manual' ) {
+			if ( ! class_exists( 'Meu_Side_Cart_Settings' ) || ! Meu_Side_Cart_Settings::is_enabled( 'enabled_header_trigger' ) || self::is_header_trigger_hidden_context() ) {
+				return '';
+			}
+
+			$valid_icons    = array( 'bag-fill', 'cart', 'basket', 'bag' );
+			$valid_displays = array( 'icon', 'icon-text', 'text' );
+			$icon           = isset( $overrides['icon'] ) && '' !== $overrides['icon'] ? sanitize_key( $overrides['icon'] ) : sanitize_key( (string) Meu_Side_Cart_Settings::get( 'header_trigger_icon' ) );
+			$display        = isset( $overrides['display'] ) && '' !== $overrides['display'] ? sanitize_key( $overrides['display'] ) : sanitize_key( (string) Meu_Side_Cart_Settings::get( 'header_trigger_display' ) );
+			$label          = isset( $overrides['label'] ) && '' !== $overrides['label'] ? sanitize_text_field( $overrides['label'] ) : sanitize_text_field( (string) Meu_Side_Cart_Settings::get( 'header_trigger_label' ) );
+			$show_counter   = isset( $overrides['counter'] ) && '' !== $overrides['counter'] ? 'yes' === $overrides['counter'] : Meu_Side_Cart_Settings::is_enabled( 'header_trigger_show_counter' );
+			$style          = sanitize_key( (string) Meu_Side_Cart_Settings::get( 'header_trigger_style' ) );
+			$icon           = in_array( $icon, $valid_icons, true ) ? $icon : 'bag-fill';
+			$display        = in_array( $display, $valid_displays, true ) ? $display : 'icon-text';
+			$style          = in_array( $style, array( 'minimal', 'outline', 'filled' ), true ) ? $style : 'minimal';
+			$label          = '' !== $label ? $label : __( 'Carrinho', 'portus-cart-for-woocommerce' );
+			$classes        = array(
+				'msc-header-trigger',
+				'msc-header-trigger-' . sanitize_html_class( $context ),
+				'msc-header-trigger-' . sanitize_html_class( $style ),
+				'msc-header-trigger-display-' . sanitize_html_class( $display ),
+			);
+
+			if ( ! Meu_Side_Cart_Settings::is_enabled( 'show_header_trigger_desktop' ) ) {
+				$classes[] = 'msc-header-trigger-hide-desktop';
+			}
+
+			if ( ! Meu_Side_Cart_Settings::is_enabled( 'show_header_trigger_mobile' ) ) {
+				$classes[] = 'msc-header-trigger-hide-mobile';
+			}
+
+			$custom_colors = Meu_Side_Cart_Settings::is_enabled( 'header_trigger_custom_colors' );
+			$foreground    = $custom_colors ? Meu_Side_Cart_Settings::get( 'header_trigger_color' ) : Meu_Side_Cart_Settings::get( 'primary_color' );
+			$background    = $custom_colors ? Meu_Side_Cart_Settings::get( 'header_trigger_background_color' ) : '#FFFFFF';
+			$hover         = $custom_colors ? Meu_Side_Cart_Settings::get( 'header_trigger_hover_color' ) : Meu_Side_Cart_Settings::get( 'accent_color' );
+			$counter_bg    = $custom_colors ? Meu_Side_Cart_Settings::get( 'header_trigger_counter_background' ) : Meu_Side_Cart_Settings::get( 'accent_color' );
+			$counter_color = $custom_colors ? Meu_Side_Cart_Settings::get( 'header_trigger_counter_color' ) : '#FFFFFF';
+			$foreground    = sanitize_hex_color( $foreground ) ?: '#00053A';
+			$background    = sanitize_hex_color( $background ) ?: '#FFFFFF';
+			$hover         = sanitize_hex_color( $hover ) ?: '#C0A821';
+			$counter_bg    = sanitize_hex_color( $counter_bg ) ?: '#C0A821';
+			$counter_color = sanitize_hex_color( $counter_color ) ?: '#FFFFFF';
+			$icon_size     = Meu_Side_Cart_Settings::get_int( 'header_trigger_icon_size', 16, 36 );
+			$inline_style  = sprintf(
+				'--msc-header-color:%1$s;--msc-header-background:%2$s;--msc-header-hover:%3$s;--msc-header-counter-background:%4$s;--msc-header-counter-color:%5$s;--msc-header-icon-size:%6$dpx;',
+				$foreground,
+				$background,
+				$hover,
+				$counter_bg,
+				$counter_color,
+				$icon_size
+			);
+			/* translators: %s: cart button label. */
+			$aria_label = sprintf( __( 'Abrir carrinho: %s', 'portus-cart-for-woocommerce' ), $label );
+
+			ob_start();
+			?>
+			<button class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>" type="button" data-msc-open style="<?php echo esc_attr( $inline_style ); ?>" aria-expanded="false" aria-controls="msc-side-panel" aria-label="<?php echo esc_attr( $aria_label ); ?>">
+				<?php if ( 'text' !== $display ) : ?>
+					<span class="msc-header-icon" aria-hidden="true"><?php self::render_floating_icon( $icon ); ?></span>
+				<?php endif; ?>
+				<?php if ( 'icon' !== $display ) : ?>
+					<span class="msc-header-label"><?php echo esc_html( $label ); ?></span>
+				<?php endif; ?>
+				<?php if ( $show_counter ) : ?>
+					<?php echo wp_kses_post( self::get_header_count_badge_html() ); ?>
+				<?php endif; ?>
+			</button>
+			<?php
+
+			return trim( ob_get_clean() );
 		}
 
 		/**
@@ -89,6 +270,12 @@ if ( ! class_exists( 'Meu_Side_Cart_Cart' ) ) {
 						<?php self::render_panel_content(); ?>
 					</div>
 				</aside>
+
+				<div class="msc-add-toast" data-msc-add-toast role="status" aria-live="polite" hidden>
+					<span class="msc-add-toast-icon" aria-hidden="true"></span>
+					<span data-msc-add-toast-message><?php esc_html_e( 'Produto adicionado ao carrinho.', 'portus-cart-for-woocommerce' ); ?></span>
+					<button type="button" data-msc-open data-msc-toast-open aria-expanded="false" aria-controls="msc-side-panel"><?php esc_html_e( 'Ver carrinho', 'portus-cart-for-woocommerce' ); ?></button>
+				</div>
 			</div>
 			<?php
 		}
@@ -142,6 +329,23 @@ if ( ! class_exists( 'Meu_Side_Cart_Cart' ) ) {
 			}
 
 			return false;
+		}
+
+		/**
+		 * Hides menu and header triggers during checkout completion flows.
+		 *
+		 * @return bool
+		 */
+		private static function is_header_trigger_hidden_context() {
+			if ( function_exists( 'is_checkout' ) && is_checkout() ) {
+				return true;
+			}
+
+			if ( function_exists( 'is_order_received_page' ) && is_order_received_page() ) {
+				return true;
+			}
+
+			return function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( 'order-received' );
 		}
 
 		/**
@@ -248,6 +452,15 @@ if ( ! class_exists( 'Meu_Side_Cart_Cart' ) ) {
 		 */
 		public static function get_count_badge_html() {
 			return '<span class="msc-floating-count" data-msc-count>' . esc_html( self::get_count() ) . '</span>';
+		}
+
+		/**
+		 * Returns the menu/header count badge.
+		 *
+		 * @return string
+		 */
+		public static function get_header_count_badge_html() {
+			return '<span class="msc-header-count" data-msc-count>' . esc_html( self::get_count() ) . '</span>';
 		}
 
 		/**
