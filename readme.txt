@@ -118,8 +118,8 @@ Cart content, quantities and totals are handled by WooCommerce. Store owners sho
 2. Empty side cart state with a clear action to continue shopping.
 3. Mobile side cart experience in a phone viewport.
 4. Desktop page with the side cart overlay active.
-5. Visual settings for colors and cart identity.
-6. About / Portus admin screen with product identity and support links.
+5. Visual settings with ready-to-use presets and brand colors.
+6. Cart settings for the floating button, menu/header trigger and add-to-cart feedback.
 7. Conversion settings for checkout and cart call-to-action labels.
 8. Plugin health screen with WordPress, PHP and file diagnostics.
 
