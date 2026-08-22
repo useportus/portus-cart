@@ -78,7 +78,6 @@
 .msc-side-cart .fa-wallet,
 .msc-side-cart .fa-credit-card { --msc-local-icon: url("../icons/total-icon.svg"); }
 .msc-side-cart .fa-ticket { --msc-local-icon: url("../icons/cupom-icon.svg"); }
-.msc-side-cart .fa-gift { --msc-local-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 7h-3.2A3 3 0 0 0 12 3.6 3 3 0 0 0 7.2 7H4v5h1v9h14v-9h1V7Zm-8 0H9.8A1.3 1.3 0 1 1 12 5.8V7Zm2.2 0H12V5.8A1.3 1.3 0 1 1 14.2 7ZM7 12h4v7H7v-7Zm6 0h4v7h-4v-7Z'/%3E%3C/svg%3E"); }
 
 .msc-side-cart *,
 .msc-side-cart *::before,
@@ -1040,6 +1039,7 @@ body.msc-lock-scroll {
 	margin-top: 10px;
 }
 
+
 .msc-quantity {
 	display: inline-grid;
 	grid-template-columns: 34px 46px 34px;
@@ -1265,24 +1265,49 @@ body.msc-lock-scroll {
 	align-self: end;
 }
 
-.msc-address-fields {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) 92px;
-	gap: 8px;
+.msc-pix-benefit,
+.msc-delivery-benefit,
+.msc-shipping {
+	animation: none;
 }
 
-.msc-address-field {
-	display: grid;
-	gap: 5px;
+.msc-shipping-form button:disabled,
+.msc-shipping-form button:disabled:hover,
+.msc-shipping-form button:disabled:focus-visible {
+	background: var(--msc-blue);
+	color: #ffffff;
+	cursor: not-allowed;
+	opacity: 0.48;
+	transform: none;
+}
+
+.msc-shipping-status {
+	min-height: 18px;
 	margin: 0;
-	color: var(--msc-text);
+	color: var(--msc-muted);
 	font-size: 12px;
-	font-weight: 800;
-	line-height: 1.2;
+	font-weight: 700;
+	line-height: 1.4;
 }
 
-.msc-address-field-wide {
-	grid-column: 1 / -1;
+.msc-shipping-status:empty {
+	min-height: 0;
+}
+
+.msc-shipping-status[data-state="loading"] {
+	color: var(--msc-blue);
+}
+
+.msc-shipping-status[data-state="success"] {
+	color: #087a4d;
+}
+
+.msc-shipping-status[data-state="error"] {
+	color: #b42318;
+}
+
+.msc-shipping [data-msc-shipping-rates][hidden] {
+	display: none !important;
 }
 
 .msc-free-shipping {
@@ -1324,6 +1349,7 @@ body.msc-lock-scroll {
 	transition: width 280ms ease;
 }
 
+
 .msc-coupons-list {
 	display: grid;
 	gap: 8px;
@@ -1340,6 +1366,7 @@ body.msc-lock-scroll {
 	justify-content: space-between;
 	gap: 12px;
 }
+
 
 .msc-rate {
 	position: relative;
@@ -1450,6 +1477,29 @@ body.msc-lock-scroll {
 .msc-upsell-content {
 	display: grid;
 	gap: 5px;
+}
+
+.msc-upsell-heading {
+	display: grid;
+	gap: 4px;
+	min-width: 0;
+}
+
+.msc-upsell-badge {
+	display: inline-flex;
+	width: fit-content;
+	max-width: 100%;
+	align-items: center;
+	border-radius: 999px;
+	padding: 3px 8px;
+	background: rgba(192, 168, 33, 0.13);
+	color: var(--msc-blue);
+	font-size: 10px;
+	font-weight: 800;
+	line-height: 1.2;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .msc-upsell-price {
@@ -1807,8 +1857,7 @@ body.msc-lock-scroll {
 		width: 100%;
 	}
 
-	.msc-postcode-row,
-	.msc-address-fields {
+	.msc-postcode-row {
 		grid-template-columns: 1fr;
 	}
 }

@@ -192,6 +192,7 @@
 	accent-color: #00053A;
 }
 
+
 .portus-cart-for-woocommerce-admin__field-color input {
 	width: 74px;
 	height: 38px;
@@ -1643,14 +1644,30 @@
 
 .portus-cart-for-woocommerce-preview__related-item > span {
 	display: block;
+	grid-row: 1 / span 2;
 	width: 28px;
 	height: 28px;
 	border-radius: 7px;
 	background: rgba(0, 5, 58, 0.08);
 }
 
+.portus-cart-for-woocommerce-preview__related-item strong {
+	align-self: end;
+	min-width: 0;
+}
+
+.portus-cart-for-woocommerce-preview__related-item small {
+	grid-column: 2;
+	color: var(--aurea-preview-muted);
+	font-size: 10px;
+	font-weight: 700;
+	line-height: 1.25;
+}
+
 .portus-cart-for-woocommerce-preview__related-item button {
 	display: grid;
+	grid-column: 3;
+	grid-row: 1 / span 2;
 	width: 34px;
 	height: 30px;
 	place-items: center;
@@ -1725,6 +1742,7 @@
 	.portus-cart-for-woocommerce-admin__grid.portus-cart-for-woocommerce-admin__grid-appearance {
 		grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
 	}
+
 }
 
 @media (max-width: 960px) {

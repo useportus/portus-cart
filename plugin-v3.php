@@ -162,11 +162,14 @@ if ( ! class_exists( 'Meu_Side_Cart_Plugin' ) ) {
 						'showAddNotice'          => ! class_exists( 'Meu_Side_Cart_Settings' ) || Meu_Side_Cart_Settings::is_enabled( 'show_add_notice_when_closed' ),
 					),
 					'i18n'          => array(
-						'genericError'    => esc_html__( 'Não foi possível atualizar o carrinho. Tente novamente.', 'portus-cart-for-woocommerce' ),
-						'loading'         => esc_html__( 'Atualizando...', 'portus-cart-for-woocommerce' ),
-						'favoriteAdded'   => esc_html__( 'Produto adicionado aos favoritos.', 'portus-cart-for-woocommerce' ),
-						'favoriteRemoved' => esc_html__( 'Produto removido dos favoritos.', 'portus-cart-for-woocommerce' ),
-						'productAdded'    => esc_html__( 'Produto adicionado ao carrinho.', 'portus-cart-for-woocommerce' ),
+						'genericError'       => esc_html__( 'Não foi possível atualizar o carrinho. Tente novamente.', 'portus-cart-for-woocommerce' ),
+						'loading'            => esc_html__( 'Atualizando...', 'portus-cart-for-woocommerce' ),
+						'favoriteAdded'      => esc_html__( 'Produto adicionado aos favoritos.', 'portus-cart-for-woocommerce' ),
+						'favoriteRemoved'    => esc_html__( 'Produto removido dos favoritos.', 'portus-cart-for-woocommerce' ),
+						'productAdded'       => esc_html__( 'Produto adicionado ao carrinho.', 'portus-cart-for-woocommerce' ),
+						'shippingRequired'   => esc_html__( 'Digite um CEP completo com 8 números.', 'portus-cart-for-woocommerce' ),
+						'shippingCalculating' => esc_html__( 'Calculando opções de entrega...', 'portus-cart-for-woocommerce' ),
+						'shippingUpdated'    => esc_html__( 'Opções de entrega atualizadas.', 'portus-cart-for-woocommerce' ),
 					),
 				)
 			);

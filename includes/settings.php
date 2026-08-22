@@ -70,15 +70,32 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 			}
 
 			$settings_url = admin_url( 'admin.php?page=' . self::MENU_SLUG );
+			$docs_url     = 'https://useportus.com/docs/portus-cart/';
+			$pro_url      = 'https://useportus.com/product/portus-cart-pro/';
+			$is_pro       = false;
 
-			array_unshift(
-				$links,
+			$action_links = array(
 				sprintf(
 					'<a href="%1$s">%2$s</a>',
 					esc_url( $settings_url ),
 					esc_html__( 'Configurações', 'portus-cart-for-woocommerce' )
-				)
+				),
+				sprintf(
+					'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+					esc_url( $docs_url ),
+					esc_html__( 'Documentação', 'portus-cart-for-woocommerce' )
+				),
 			);
+
+			if ( ! $is_pro ) {
+				$action_links[] = sprintf(
+					'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+					esc_url( $pro_url ),
+					esc_html__( 'Conheça o Pro', 'portus-cart-for-woocommerce' )
+				);
+			}
+
+			array_unshift( $links, ...$action_links );
 
 			return $links;
 		}
@@ -932,6 +949,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 		}
 
 
+
 		/**
 		 * Renders the stock tab.
 		 *
@@ -1067,7 +1085,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 					'description' => __( 'Aviso de estoque baixo e limite para exibir alerta ao cliente.', 'portus-cart-for-woocommerce' ),
 				),				array(
 					'title'       => __( 'Recomendações', 'portus-cart-for-woocommerce' ),
-					'description' => __( 'Título e quantidade de recomendações exibidas dentro do carrinho.', 'portus-cart-for-woocommerce' ),
+					'description' => __( 'Recomendações automáticas, manuais ou por categoria para aumentar o ticket no carrinho.', 'portus-cart-for-woocommerce' ),
 				),
 				array(
 					'title'       => __( 'Compatibilidade', 'portus-cart-for-woocommerce' ),
@@ -1230,7 +1248,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 							'label'   => __( 'Ações do carrinho', 'portus-cart-for-woocommerce' ),
 							'status'  => $ajax_ready ? 'good' : 'warning',
 							'value'   => $ajax_ready ? __( 'Registradas', 'portus-cart-for-woocommerce' ) : __( 'Incompletas', 'portus-cart-for-woocommerce' ),
-							'message' => __( 'Remove, atualiza quantidade e cupom por rotas seguras do WordPress.', 'portus-cart-for-woocommerce' ),
+							'message' => __( 'Remove, atualiza quantidade, cupom e recomendações por rotas seguras do WordPress.', 'portus-cart-for-woocommerce' ),
 						),
 						array(
 							'label'   => __( 'Fragmentos WooCommerce', 'portus-cart-for-woocommerce' ),
@@ -1383,7 +1401,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 
 
 		/**
-		 * Returns support diagnostic data without license keys or secrets.
+		 * Returns support diagnostic data without sensitive secrets.
 		 *
 		 * @return array
 		 */
@@ -1644,23 +1662,6 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 
 
 
-		/**
-		 * Translates known legacy messages returned by older license endpoints.
-		 *
-		 * @param string $message License server message.
-		 * @return string
-		 */
-		private static function get_license_message_text( $message ) {
-			$message = is_scalar( $message ) ? sanitize_text_field( (string) $message ) : '';
-			$legacy_messages = array(
-				'License active for this domain.'                                  => __( 'Licença ativa para este domínio.', 'portus-cart-for-woocommerce' ),
-				'License invalid, expired or not authorized for this domain.'      => __( 'Licença inválida, expirada ou não autorizada para este domínio.', 'portus-cart-for-woocommerce' ),
-				'License deactivated on this domain.'                              => __( 'Licença desativada neste domínio.', 'portus-cart-for-woocommerce' ),
-				'License key is required.'                                         => __( 'Informe uma chave de licença.', 'portus-cart-for-woocommerce' ),
-			);
-
-			return isset( $legacy_messages[ $message ] ) ? $legacy_messages[ $message ] : $message;
-		}
 
 
 
@@ -1847,6 +1848,13 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 
 				return max( 1, min( 10, absint( $value ) ) );
 			}
+
+
+
+
+
+
+
 
 
 			if ( in_array( $key, array( 'primary_color', 'accent_color', 'floating_background_color', 'floating_icon_color', 'floating_counter_background', 'floating_counter_text_color', 'header_trigger_color', 'header_trigger_background_color', 'header_trigger_hover_color', 'header_trigger_counter_background', 'header_trigger_counter_color' ), true ) ) {

@@ -5,7 +5,7 @@ Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 3.5.1
+Stable tag: 3.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,25 +114,18 @@ Cart content, quantities and totals are handled by WooCommerce. Store owners sho
 
 == Screenshots ==
 
-1. Side cart panel with products, quantity controls, coupon field, totals and checkout action.
-2. Empty side cart state with a clear action to continue shopping.
-3. Mobile side cart experience in a phone viewport.
-4. Desktop page with the side cart overlay active.
-5. Visual settings with ready-to-use presets and brand colors.
-6. Cart settings for the floating button, menu/header trigger and add-to-cart feedback.
-7. Conversion settings for checkout and cart call-to-action labels.
-8. Plugin health screen with WordPress, PHP and file diagnostics.
+1. Responsive Free side cart showing product, coupon, totals, checkout actions and empty state.
+2. Free cart settings for floating button, menu/header placement and add-to-cart feedback.
 
 == Changelog ==
 
-= 3.5.1 =
-* Adds an optional menu/header cart trigger with automatic placement, shortcode and Gutenberg block.
-* Adds independent icon, text, counter, style, colors and responsive visibility controls for the header trigger.
-* Adds Classic, Minimal, Portus and Highlight visual presets.
-* Adds accessible add-to-cart feedback animation and notification.
-* Keeps the menu/header trigger disabled by default to preserve existing layouts.
+= 3.7.0 =
+* Adds quick plugin action links for settings, documentation and Pro information.
+* Improves the public package build so private updater, license screen and Pro-only modules remain outside WordPress.org.
+* Keeps the Free feature set unchanged and available without a license key.
+* Updates release metadata for the current public package.
 
 == Upgrade Notice ==
 
-= 3.5.1 =
-Adds optional menu/header triggers, visual presets and accessible add-to-cart feedback without changing existing layouts by default.
+= 3.7.0 =
+Maintenance release for the public package. The Free feature set remains unchanged and no Pro-only features are bundled.

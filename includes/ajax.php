@@ -92,6 +92,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Ajax' ) ) {
 			}
 
 			WC()->cart->set_quantity( $cart_key, $quantity, true );
+
 			wc_add_notice( __( 'Carrinho atualizado.', 'portus-cart-for-woocommerce' ), 'success' );
 
 			self::send_success();
@@ -260,6 +261,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Ajax' ) ) {
 		 * Sends a success response with fresh cart HTML.
 		 */
 		private static function send_success( $prefer_free_shipping = true ) {
+
 
 			WC()->cart->calculate_totals();
 

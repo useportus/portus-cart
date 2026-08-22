@@ -25,16 +25,18 @@ if ( ! class_exists( 'Meu_Side_Cart_Coupon' ) ) {
 				return;
 			}
 
-			$coupons = WC()->cart->get_coupons();
+			$coupons         = WC()->cart->get_coupons();
+			$visible_coupons = $coupons;
+
 			?>
 			<section class="msc-section msc-coupon" aria-label="<?php esc_attr_e( 'Cupom de desconto', 'portus-cart-for-woocommerce' ); ?>">
 				<div class="msc-section-title">
 					<h3><i class="fa-solid fa-ticket" aria-hidden="true"></i><?php esc_html_e( 'Cupom de desconto', 'portus-cart-for-woocommerce' ); ?></h3>
 				</div>
 
-				<?php if ( ! empty( $coupons ) ) : ?>
+				<?php if ( ! empty( $visible_coupons ) ) : ?>
 					<ul class="msc-coupons-list">
-						<?php foreach ( $coupons as $code => $coupon ) : ?>
+						<?php foreach ( $visible_coupons as $code => $coupon ) : ?>
 							<li>
 								<span><?php echo esc_html( wc_cart_totals_coupon_label( $coupon, false ) ); ?></span>
 								<button type="button" class="msc-link-button" data-msc-remove-coupon data-coupon="<?php echo esc_attr( $code ); ?>">

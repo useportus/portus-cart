@@ -589,10 +589,10 @@ if ( ! class_exists( 'Meu_Side_Cart_Cart' ) ) {
 										<span class="msc-item-name"><?php echo esc_html( $product_name ); ?></span>
 									<?php endif; ?>
 
-									<button class="msc-link-button" type="button" data-msc-remove-item data-cart-key="<?php echo esc_attr( $cart_item_key ); ?>">
-										<i class="fa-regular fa-trash-can msc-remove-trash-icon" aria-hidden="true"></i>
-										<span class="msc-screen-reader"><?php esc_html_e( 'Remover item', 'portus-cart-for-woocommerce' ); ?></span>
-									</button>
+										<button class="msc-link-button" type="button" data-msc-remove-item data-cart-key="<?php echo esc_attr( $cart_item_key ); ?>">
+											<i class="fa-regular fa-trash-can msc-remove-trash-icon" aria-hidden="true"></i>
+											<span class="msc-screen-reader"><?php esc_html_e( 'Remover item', 'portus-cart-for-woocommerce' ); ?></span>
+										</button>
 								</div>
 
 								<?php
@@ -604,11 +604,11 @@ if ( ! class_exists( 'Meu_Side_Cart_Cart' ) ) {
 
 
 								<div class="msc-item-price-row">
-									<span class="msc-item-price"><?php echo wp_kses_post( WC()->cart->get_product_price( $product ) ); ?></span>
-									<strong class="msc-item-subtotal"><?php echo wp_kses_post( WC()->cart->get_product_subtotal( $product, $cart_item['quantity'] ) ); ?></strong>
+										<span class="msc-item-price"><?php echo wp_kses_post( WC()->cart->get_product_price( $product ) ); ?></span>
+										<strong class="msc-item-subtotal"><?php echo wp_kses_post( WC()->cart->get_product_subtotal( $product, $cart_item['quantity'] ) ); ?></strong>
 								</div>
 
-								<div class="msc-item-actions-row">
+									<div class="msc-item-actions-row">
 									<div class="msc-quantity" aria-label="<?php esc_attr_e( 'Quantidade', 'portus-cart-for-woocommerce' ); ?>" <?php echo $has_max_quantity ? 'data-msc-max-qty="' . esc_attr( $max_quantity ) . '"' : ''; ?>>
 										<button type="button" data-msc-qty-minus aria-label="<?php esc_attr_e( 'Diminuir quantidade', 'portus-cart-for-woocommerce' ); ?>">
 											<i class="fa-solid fa-minus" aria-hidden="true"></i>
@@ -640,7 +640,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Cart' ) ) {
 									>
 										<i class="fa-regular fa-heart" aria-hidden="true"></i>
 									</button>
-								</div>
+									</div>
 
 								<?php if ( $stock_notice || $limit_notice ) : ?>
 									<p class="msc-stock-alert">
