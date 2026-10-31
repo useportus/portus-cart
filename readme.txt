@@ -5,7 +5,7 @@ Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 3.7.0
+Stable tag: 3.8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -119,13 +119,14 @@ Cart content, quantities and totals are handled by WooCommerce. Store owners sho
 
 == Changelog ==
 
-= 3.7.0 =
+= 3.8.0 =
 * Adds quick plugin action links for settings, documentation and Pro information.
-* Improves the public package build so private updater, license screen and Pro-only modules remain outside WordPress.org.
-* Keeps the Free feature set unchanged and available without a license key.
+* Keeps coupon application and removal available directly in the side cart.
+* Improves the public package build so private updater, license screen, metrics and other Pro-only modules remain outside WordPress.org.
+* Keeps all Free features available without a license key.
 * Updates release metadata for the current public package.
 
 == Upgrade Notice ==
 
-= 3.7.0 =
-Maintenance release for the public package. The Free feature set remains unchanged and no Pro-only features are bundled.
+= 3.8.0 =
+Maintenance release for the public package. Coupon actions remain included and no Pro-only features are bundled.

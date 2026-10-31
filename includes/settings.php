@@ -24,7 +24,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 			add_action( 'admin_post_meu_side_cart_export_settings', array( __CLASS__, 'handle_export' ) );
 			add_action( 'admin_post_meu_side_cart_export_diagnostics', array( __CLASS__, 'handle_diagnostics_export' ) );
 			add_action( 'admin_post_meu_side_cart_import_settings', array( __CLASS__, 'handle_import' ) );
-			add_action( 'admin_post_meu_side_cart_reset_settings', array( __CLASS__, 'handle_reset' ) );
+			add_action( 'admin_post_meu_side_cart_reset_settings', array( __CLASS__, 'handle_reset' ) );			add_action( 'admin_post_meu_side_cart_activate_license', array( __CLASS__, 'handle_activate_license' ) );
 			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_admin_assets' ) );
 			add_filter( 'plugin_action_links_' . MEU_SIDE_CART_BASENAME, array( __CLASS__, 'add_plugin_action_links' ) );
 		}
@@ -534,7 +534,6 @@ if ( ! class_exists( 'Meu_Side_Cart_Settings' ) ) {
 				'appearance' => __( 'Visual', 'portus-cart-for-woocommerce' ),
 				'buttons'    => __( 'Conversão', 'portus-cart-for-woocommerce' ),
 				'stock'      => __( 'Estoque', 'portus-cart-for-woocommerce' ),
-				'compat'     => __( 'Compatibilidade', 'portus-cart-for-woocommerce' ),
 				'advanced'   => __( 'Ferramentas', 'portus-cart-for-woocommerce' ),
 				'status'     => __( 'Saúde do plugin', 'portus-cart-for-woocommerce' ),
 				'help'       => __( 'Guia', 'portus-cart-for-woocommerce' ),

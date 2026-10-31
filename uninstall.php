@@ -23,5 +23,4 @@ if ( ! function_exists( 'meu_side_cart_should_delete_settings_on_uninstall' ) ) 
 }
 
 if ( meu_side_cart_should_delete_settings_on_uninstall() ) {
-	delete_option( 'meu_side_cart_settings' );
-}
+	delete_option( 'meu_side_cart_settings' );}

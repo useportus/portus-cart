@@ -160,8 +160,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Plugin' ) ) {
 						'autoOpenOnAdd'          => class_exists( 'Meu_Side_Cart_Settings' ) && Meu_Side_Cart_Settings::is_enabled( 'auto_open_on_add' ),
 						'addAnimation'           => class_exists( 'Meu_Side_Cart_Settings' ) ? Meu_Side_Cart_Settings::get( 'add_animation_style' ) : 'pulse',
 						'showAddNotice'          => ! class_exists( 'Meu_Side_Cart_Settings' ) || Meu_Side_Cart_Settings::is_enabled( 'show_add_notice_when_closed' ),
-					),
-					'i18n'          => array(
+					),					'i18n'          => array(
 						'genericError'       => esc_html__( 'Não foi possível atualizar o carrinho. Tente novamente.', 'portus-cart-for-woocommerce' ),
 						'loading'            => esc_html__( 'Atualizando...', 'portus-cart-for-woocommerce' ),
 						'favoriteAdded'      => esc_html__( 'Produto adicionado aos favoritos.', 'portus-cart-for-woocommerce' ),

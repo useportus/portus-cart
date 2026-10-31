@@ -1,6 +1,6 @@
 <?php
 /**
- * AJAX handlers.
+ * AJAX handlers for the public free package.
  *
  * @package PortusCart
  */
@@ -38,7 +38,6 @@ if ( ! class_exists( 'Meu_Side_Cart_Ajax' ) ) {
 			self::send_success();
 		}
 
-
 		/**
 		 * Removes a cart item.
 		 */
@@ -48,11 +47,11 @@ if ( ! class_exists( 'Meu_Side_Cart_Ajax' ) ) {
 			$cart_key = self::post_text( 'cart_key' );
 
 			if ( '' === $cart_key || ! WC()->cart->get_cart_item( $cart_key ) ) {
-				self::send_error( __( 'Item não encontrado no carrinho.', 'portus-cart-for-woocommerce' ) );
+				self::send_error( __( 'Item não encontrado no carrinho.', 'portus-cart' ) );
 			}
 
 			WC()->cart->remove_cart_item( $cart_key );
-			wc_add_notice( __( 'Produto removido do carrinho.', 'portus-cart-for-woocommerce' ), 'success' );
+			wc_add_notice( __( 'Produto removido do carrinho.', 'portus-cart' ), 'success' );
 
 			self::send_success();
 		}
@@ -64,12 +63,11 @@ if ( ! class_exists( 'Meu_Side_Cart_Ajax' ) ) {
 			self::verify_request();
 
 			$cart_key = self::post_text( 'cart_key' );
-			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce is verified at the start of this AJAX handler.
-			$quantity = isset( $_POST['quantity'] ) ? wc_stock_amount( sanitize_text_field( wp_unslash( $_POST['quantity'] ) ) ) : 0;
+			$quantity = isset( $_POST['quantity'] ) ? wc_stock_amount( wp_unslash( $_POST['quantity'] ) ) : 0;
 			$quantity = max( 0, $quantity );
 
 			if ( '' === $cart_key || ! WC()->cart->get_cart_item( $cart_key ) ) {
-				self::send_error( __( 'Item não encontrado no carrinho.', 'portus-cart-for-woocommerce' ) );
+				self::send_error( __( 'Item não encontrado no carrinho.', 'portus-cart' ) );
 			}
 
 			$cart_item = WC()->cart->get_cart_item( $cart_key );
@@ -83,7 +81,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Ajax' ) ) {
 					wc_add_notice(
 						sprintf(
 							/* translators: %d: maximum purchase quantity. */
-							__( 'Quantidade ajustada ao limite disponível: %d.', 'portus-cart-for-woocommerce' ),
+							__( 'Quantidade ajustada ao limite disponível: %d.', 'portus-cart' ),
 							$max_quantity
 						),
 						'notice'
@@ -92,8 +90,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Ajax' ) ) {
 			}
 
 			WC()->cart->set_quantity( $cart_key, $quantity, true );
-
-			wc_add_notice( __( 'Carrinho atualizado.', 'portus-cart-for-woocommerce' ), 'success' );
+			wc_add_notice( __( 'Carrinho atualizado.', 'portus-cart' ), 'success' );
 
 			self::send_success();
 		}
@@ -107,11 +104,11 @@ if ( ! class_exists( 'Meu_Side_Cart_Ajax' ) ) {
 			$coupon_code = wc_format_coupon_code( self::post_text( 'coupon' ) );
 
 			if ( '' === $coupon_code ) {
-				self::send_error( __( 'Informe um cupom válido.', 'portus-cart-for-woocommerce' ) );
+				self::send_error( __( 'Informe um cupom válido.', 'portus-cart' ) );
 			}
 
 			if ( WC()->cart->has_discount( $coupon_code ) ) {
-				wc_add_notice( __( 'Este cupom já está aplicado.', 'portus-cart-for-woocommerce' ), 'notice' );
+				wc_add_notice( __( 'Este cupom já está aplicado.', 'portus-cart' ), 'notice' );
 				self::send_success();
 			}
 
@@ -128,17 +125,14 @@ if ( ! class_exists( 'Meu_Side_Cart_Ajax' ) ) {
 			$coupon_code = wc_format_coupon_code( self::post_text( 'coupon' ) );
 
 			if ( '' === $coupon_code || ! WC()->cart->has_discount( $coupon_code ) ) {
-				self::send_error( __( 'Cupom não encontrado.', 'portus-cart-for-woocommerce' ) );
+				self::send_error( __( 'Cupom não encontrado.', 'portus-cart' ) );
 			}
 
 			WC()->cart->remove_coupon( $coupon_code );
-			wc_add_notice( __( 'Cupom removido.', 'portus-cart-for-woocommerce' ), 'success' );
+			wc_add_notice( __( 'Cupom removido.', 'portus-cart' ), 'success' );
 
 			self::send_success();
 		}
-
-
-
 
 		/**
 		 * Verifies nonce and cart availability.
@@ -147,7 +141,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Ajax' ) ) {
 			check_ajax_referer( 'meu_side_cart_nonce', 'nonce' );
 
 			if ( ! function_exists( 'WC' ) ) {
-				self::send_error( __( 'WooCommerce indisponível.', 'portus-cart-for-woocommerce' ) );
+				self::send_error( __( 'WooCommerce indisponível.', 'portus-cart' ) );
 			}
 
 			if ( null === WC()->cart && function_exists( 'wc_load_cart' ) ) {
@@ -155,7 +149,7 @@ if ( ! class_exists( 'Meu_Side_Cart_Ajax' ) ) {
 			}
 
 			if ( ! WC()->cart ) {
-				self::send_error( __( 'Carrinho indisponível.', 'portus-cart-for-woocommerce' ) );
+				self::send_error( __( 'Carrinho indisponível.', 'portus-cart' ) );
 			}
 		}
 
@@ -166,103 +160,13 @@ if ( ! class_exists( 'Meu_Side_Cart_Ajax' ) ) {
 		 * @return string
 		 */
 		private static function post_text( $key ) {
-			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce is verified before AJAX helpers read request fields.
 			return isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : '';
-		}
-
-		/**
-		 * Reads and validates posted variation attributes for a parent product.
-		 *
-		 * @param WC_Product_Variable $parent_product Parent product.
-		 * @return array
-		 */
-		private static function get_posted_variation_attributes( $parent_product ) {
-			$attributes = array();
-
-			foreach ( $parent_product->get_variation_attributes() as $attribute_name => $options ) {
-				$field_name = function_exists( 'wc_variation_attribute_name' ) ? wc_variation_attribute_name( $attribute_name ) : 'attribute_' . sanitize_title( $attribute_name );
-				$value      = self::post_text( $field_name );
-
-				if ( '' === $value ) {
-					return array();
-				}
-
-				$attributes[ $field_name ] = $value;
-			}
-
-			return $attributes;
-		}
-
-		/**
-		 * Preserves custom cart item data while replacing a variation.
-		 *
-		 * @param array $cart_item Cart item data.
-		 * @return array
-		 */
-		private static function get_preserved_cart_item_data( $cart_item ) {
-			$excluded = array(
-				'data',
-				'key',
-				'product_id',
-				'variation_id',
-				'variation',
-				'quantity',
-				'line_total',
-				'line_subtotal',
-				'line_tax',
-				'line_subtotal_tax',
-				'line_tax_data',
-			);
-
-			foreach ( $excluded as $key ) {
-				unset( $cart_item[ $key ] );
-			}
-
-			return $cart_item;
-		}
-
-		/**
-		 * Counts cart quantity for the same stock-managed product.
-		 *
-		 * @param WC_Product $product Product object.
-		 * @param string     $excluded_cart_key Cart item key to ignore while replacing a variation.
-		 * @return int
-		 */
-		private static function get_cart_quantity_for_product( $product, $excluded_cart_key = '' ) {
-			if ( ! WC()->cart || ! $product ) {
-				return 0;
-			}
-
-			$target_id = method_exists( $product, 'get_stock_managed_by_id' ) ? $product->get_stock_managed_by_id() : $product->get_id();
-			$quantity  = 0;
-
-			foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
-				if ( '' !== $excluded_cart_key && $cart_item_key === $excluded_cart_key ) {
-					continue;
-				}
-
-				$item_product = isset( $cart_item['data'] ) ? $cart_item['data'] : null;
-
-				if ( ! $item_product ) {
-					continue;
-				}
-
-				$item_id = method_exists( $item_product, 'get_stock_managed_by_id' ) ? $item_product->get_stock_managed_by_id() : $item_product->get_id();
-
-				if ( (int) $item_id === (int) $target_id ) {
-					$quantity += isset( $cart_item['quantity'] ) ? absint( $cart_item['quantity'] ) : 0;
-				}
-			}
-
-			return $quantity;
 		}
 
 		/**
 		 * Sends a success response with fresh cart HTML.
 		 */
-		private static function send_success( $prefer_free_shipping = true ) {
-
-
+		private static function send_success() {
 			WC()->cart->calculate_totals();
 
 			wp_send_json_success( Meu_Side_Cart_Cart::get_payload( self::get_notices() ) );
