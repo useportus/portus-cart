@@ -1026,6 +1026,13 @@ body.msc-lock-scroll {
 	color: var(--msc-gold);
 }
 
+.msc-side-cart .woocommerce-Price-amount bdi {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 4px;
+	white-space: nowrap;
+}
+
 .msc-item-subtotal {
 	font-size: 14px;
 	white-space: nowrap;
@@ -1042,6 +1049,8 @@ body.msc-lock-scroll {
 
 .msc-quantity {
 	display: inline-grid;
+	width: fit-content;
+	justify-self: start;
 	grid-template-columns: 34px 46px 34px;
 	overflow: hidden;
 	border: 1px solid rgba(0, 5, 58, 0.14);
@@ -1158,10 +1167,7 @@ body.msc-lock-scroll {
 	align-items: center;
 	gap: 7px;
 	margin: 8px 0 0;
-	border: 1px solid rgba(192, 168, 33, 0.38);
-	border-radius: 8px;
-	padding: 7px 9px;
-	background: rgba(192, 168, 33, 0.1);
+	padding: 0;
 	color: var(--msc-blue);
 	font-size: 12px;
 	font-weight: 800;

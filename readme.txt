@@ -5,7 +5,7 @@ Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 3.8.0
+Stable tag: 3.8.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -119,14 +119,14 @@ Cart content, quantities and totals are handled by WooCommerce. Store owners sho
 
 == Changelog ==
 
-= 3.8.0 =
-* Adds quick plugin action links for settings, documentation and Pro information.
-* Keeps coupon application and removal available directly in the side cart.
-* Improves the public package build so private updater, license screen, metrics and other Pro-only modules remain outside WordPress.org.
-* Keeps all Free features available without a license key.
-* Updates release metadata for the current public package.
+= 3.8.3 =
+* Improves the mobile quantity selector so it keeps a compact width beside the favorite action.
+* Simplifies low-stock notices to an icon and message without a highlighted container.
+* Adds spacing between the currency symbol and prices inside the side cart.
+* Keeps coupon application and removal available directly in the side cart, with all Free features available without a license key.
+* Keeps private updater, license screen, metrics and other Pro-only modules outside the public package.
 
 == Upgrade Notice ==
 
-= 3.8.0 =
-Maintenance release for the public package. Coupon actions remain included and no Pro-only features are bundled.
+= 3.8.3 =
+Visual refinement release for the side cart. Coupon actions remain included and no Pro-only features are bundled.
